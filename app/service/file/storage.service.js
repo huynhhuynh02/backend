@@ -1,0 +1,33 @@
+import appConf from '../../config/application';
+import db from '../../db/models';
+import {appLog} from "../../config/winston_new";
+
+const multer = require('multer');
+const fs = require('fs');
+
+export const handleSingleUpload = multer({
+  dest: appConf.fileUploadDir,
+  limits: {
+    fileSize: 5242880
+  }
+}).single('file');
+
+export const publicUploadHandler = multer({
+  dest: appConf.emailFileUploadDir,
+  limits: {
+    fileSize: 5242880
+  }
+}).single('file');
+
+export async function deleteFile(fileUploadId, {transaction}) {
+  const fileUpload = await db.FileUpload.findByPk(fileUploadId, {transaction});
+  if (fileUpload) {
+    fs.unlink(`${appConf.fileUploadDir}/${fileUpload.filename}`, (err) => {
+      if (err) {
+        appLog.error(err.message, err);
+      }
+    });
+    return fileUpload.destroy({transaction});
+  }
+  return null;
+}
