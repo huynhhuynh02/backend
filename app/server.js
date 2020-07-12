@@ -7,6 +7,7 @@ import appConf from './config/application';
 import {FormError, isSystemError} from './config/error';
 import {loadConfigure} from "./config/system";
 import {initWebAuthController} from "./controller/web/auth.controller";
+import {initMobileController} from "./controller/mobile";
 
 const passport = require('passport');
 
@@ -21,8 +22,17 @@ app.use(passport.initialize());
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({extended: false}));
 
+/* eslint-enable no-unused-vars */
+app.get('/', (req, res) => res.send({message: 'Welcome to the default API route'}));
+
+/* MOBILE */
+initMobileController(app);
+
+/* WEB */
+initWebAuthController(app);
+
 app.use((err, req, res, next) => {
-  appLog.log('error', 'Exception: ', err);
+  appLog.error('error', 'Exception: ', err);
   next(err);
 });
 
@@ -37,11 +47,6 @@ app.use((err, req, res, next) => {
       .json({error: err.message});
   }
 });
-
-/* eslint-enable no-unused-vars */
-app.get('/', (req, res) => res.send({message: 'Welcome to the default API route'}));
-
-initWebAuthController(app);
 
 // setup express application
 const server = http.createServer(app);

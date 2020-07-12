@@ -47,9 +47,25 @@ export async function signIn({username, password}) {
   }
   const userJson = user.get({plain: true});
   appLog.info(userJson);
+  const {permissions, shopPermissions} = userJson;
+  const userPermission = {};
+  permissions.forEach(perm => {
+    const {actionId, type} = perm;
+    if (!userPermission[`action${actionId}`]) {
+      userPermission[`action${actionId}`] = {type: type};
+    }
+  });
+  shopPermissions.forEach(perm => {
+    const {actionId, shopId} = perm;
+    userPermission[`action${actionId}`].shopId = shopId;
+  })
 
   const token = jwt.sign(userJson, APP_CONFIG.JWT.secret);
-  return token;
+  userJson.permissions = userPermission;
+  return {
+    token,
+    user: userJson
+  };
 }
 
 export async function register(registerForm) {
