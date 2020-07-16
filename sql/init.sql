@@ -29,7 +29,7 @@ CREATE TABLE `acl_action` (
   `moduleId` int(11) NOT NULL,
   `remark` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -55,7 +55,7 @@ CREATE TABLE `acl_group` (
   `remark` text,
   `createdById` bigint(20) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,7 +80,7 @@ CREATE TABLE `acl_group_action` (
   `actionId` int(11) NOT NULL,
   `type` int(11) DEFAULT '1',
   PRIMARY KEY (`groupId`,`actionId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -105,7 +105,7 @@ CREATE TABLE `acl_group_action_shop` (
   `actionId` int(11) NOT NULL,
   `shopId` bigint(20) NOT NULL,
   PRIMARY KEY (`groupId`,`actionId`,`shopId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +129,7 @@ CREATE TABLE `acl_module` (
   `name` varchar(250) NOT NULL,
   `remark` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -158,7 +158,7 @@ CREATE TABLE `asset` (
   `createdDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `asset_fileId_uindex` (`fileId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,7 +186,7 @@ CREATE TABLE `company` (
   `createdDate` datetime DEFAULT NULL,
   `createdById` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -287,7 +287,7 @@ CREATE TABLE `company_shop` (
   KEY `user_company_fk` (`companyId`),
   CONSTRAINT `user_company_fk` FOREIGN KEY (`companyId`) REFERENCES `company` (`id`),
   CONSTRAINT `user_company_shop_shop_id_fk` FOREIGN KEY (`shopId`) REFERENCES `shop` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -317,9 +317,11 @@ CREATE TABLE `cost` (
   `processedDate` datetime DEFAULT NULL,
   `lastModifiedDate` datetime DEFAULT CURRENT_TIMESTAMP,
   `lastModifiedById` bigint(20) DEFAULT NULL,
+  `partnerCompanyId` bigint(20) DEFAULT NULL,
+  `partnerPersonId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `cost_companyId_createdById_processedDate_index` (`companyId`,`createdById`,`processedDate`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -332,33 +334,28 @@ LOCK TABLES `cost` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `cost_detail`
+-- Table structure for table `cost_purpose`
 --
 
-DROP TABLE IF EXISTS `cost_detail`;
+DROP TABLE IF EXISTS `cost_purpose`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `cost_detail` (
+CREATE TABLE `cost_purpose` (
   `costId` bigint(20) NOT NULL,
-  `id` int(11) NOT NULL,
-  `productId` bigint(20) NOT NULL,
-  `quantity` decimal(10,2) DEFAULT NULL,
-  `amount` decimal(16,2) DEFAULT NULL,
-  `price` decimal(16,2) DEFAULT NULL,
-  `remark` text,
-  `unitId` int(11) DEFAULT NULL,
-  PRIMARY KEY (`costId`,`id`),
-  CONSTRAINT `cost_detail_cost_id_fk` FOREIGN KEY (`costId`) REFERENCES `cost` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `purposeId` int(11) NOT NULL,
+  `relativeId` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`costId`,`purposeId`),
+  CONSTRAINT `cost_purpose_cost_id_fk` FOREIGN KEY (`costId`) REFERENCES `cost` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cost_detail`
+-- Dumping data for table `cost_purpose`
 --
 
-LOCK TABLES `cost_detail` WRITE;
-/*!40000 ALTER TABLE `cost_detail` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cost_detail` ENABLE KEYS */;
+LOCK TABLES `cost_purpose` WRITE;
+/*!40000 ALTER TABLE `cost_purpose` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cost_purpose` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -382,7 +379,7 @@ CREATE TABLE `customer` (
   `birthday` date DEFAULT NULL,
   `country` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -446,7 +443,7 @@ CREATE TABLE `inventory` (
   `remark` text,
   PRIMARY KEY (`id`),
   KEY `inventory_createdById_companyId_index` (`createdById`,`companyId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -473,7 +470,7 @@ CREATE TABLE `inventory_detail` (
   `remark` text,
   PRIMARY KEY (`inventoryId`,`id`),
   CONSTRAINT `inventory_detail_inventory_id_fk` FOREIGN KEY (`inventoryId`) REFERENCES `inventory` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -483,6 +480,31 @@ CREATE TABLE `inventory_detail` (
 LOCK TABLES `inventory_detail` WRITE;
 /*!40000 ALTER TABLE `inventory_detail` DISABLE KEYS */;
 /*!40000 ALTER TABLE `inventory_detail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `inventory_purpose`
+--
+
+DROP TABLE IF EXISTS `inventory_purpose`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `inventory_purpose` (
+  `inventoryId` bigint(20) NOT NULL,
+  `purposeId` int(11) NOT NULL,
+  `relativeId` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`inventoryId`,`purposeId`),
+  CONSTRAINT `inventory_purpose_inventory_id_fk` FOREIGN KEY (`inventoryId`) REFERENCES `inventory` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inventory_purpose`
+--
+
+LOCK TABLES `inventory_purpose` WRITE;
+/*!40000 ALTER TABLE `inventory_purpose` DISABLE KEYS */;
+/*!40000 ALTER TABLE `inventory_purpose` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -524,18 +546,20 @@ CREATE TABLE `order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `purchasedDate` datetime DEFAULT NULL,
   `customerId` bigint(20) NOT NULL,
-  `createdDate` datetime DEFAULT NULL,
-  `createdById` bigint(20) NOT NULL,
+  `partnerCompanyId` bigint(20) DEFAULT '0',
+  `type` tinyint(4) DEFAULT NULL COMMENT '1: Purchase Order\n2: Sale Order',
   `companyId` datetime NOT NULL,
   `totalAmount` decimal(16,2) DEFAULT NULL,
   `remark` text,
   `shopId` bigint(20) NOT NULL,
   `lastModifiedDate` datetime DEFAULT NULL,
   `lastModifiedById` bigint(20) DEFAULT NULL,
+  `createdById` bigint(20) NOT NULL,
+  `createdDate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `order__date_index` (`companyId`,`createdDate`),
   KEY `order_company_shop__index` (`shopId`,`companyId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -565,7 +589,7 @@ CREATE TABLE `order_detail` (
   `remark` text,
   PRIMARY KEY (`orderId`,`id`),
   CONSTRAINT `order_detail_order_id_fk` FOREIGN KEY (`orderId`) REFERENCES `order` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -626,7 +650,7 @@ CREATE TABLE `product` (
   `insertedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `product_name_index` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -649,7 +673,7 @@ CREATE TABLE `product_asset` (
   `assetId` bigint(20) NOT NULL,
   `productId` bigint(20) NOT NULL,
   PRIMARY KEY (`productId`,`assetId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -673,7 +697,7 @@ CREATE TABLE `product_unit` (
   `id` int(11) NOT NULL,
   `name` varchar(50) DEFAULT NULL,
   `rate` decimal(10,2) DEFAULT '1.00'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -701,7 +725,7 @@ CREATE TABLE `shop` (
   `createdDate` datetime DEFAULT NULL,
   `createdById` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -760,7 +784,7 @@ CREATE TABLE `user` (
   `groupId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_email_uindex` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -887,7 +911,7 @@ CREATE TABLE `warehouse` (
   `userId` bigint(20) DEFAULT NULL,
   `companyId` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -908,4 +932,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-16 11:22:47
+-- Dump completed on 2020-07-16 14:23:13
