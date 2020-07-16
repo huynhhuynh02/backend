@@ -180,8 +180,11 @@ DROP TABLE IF EXISTS `company`;
 CREATE TABLE `company` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(250) DEFAULT NULL,
-  `description` text,
-  `insertedDate` datetime DEFAULT NULL,
+  `gsm` varchar(20) DEFAULT NULL,
+  `address` varchar(250) DEFAULT NULL,
+  `remark` text,
+  `createdDate` datetime DEFAULT NULL,
+  `createdById` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -193,6 +196,107 @@ CREATE TABLE `company` (
 LOCK TABLES `company` WRITE;
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `company_own_company`
+--
+
+DROP TABLE IF EXISTS `company_own_company`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `company_own_company` (
+  `companyId` bigint(20) NOT NULL,
+  `partnerCompanyId` bigint(20) NOT NULL,
+  PRIMARY KEY (`companyId`,`partnerCompanyId`),
+  KEY `company_partner___fk` (`partnerCompanyId`),
+  CONSTRAINT `company_own_id_fk` FOREIGN KEY (`companyId`) REFERENCES `company` (`id`),
+  CONSTRAINT `company_partner___fk` FOREIGN KEY (`partnerCompanyId`) REFERENCES `company` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `company_own_company`
+--
+
+LOCK TABLES `company_own_company` WRITE;
+/*!40000 ALTER TABLE `company_own_company` DISABLE KEYS */;
+/*!40000 ALTER TABLE `company_own_company` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `company_partner_person`
+--
+
+DROP TABLE IF EXISTS `company_partner_person`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `company_partner_person` (
+  `partnerCompanyId` bigint(20) NOT NULL,
+  `personId` bigint(20) NOT NULL,
+  PRIMARY KEY (`partnerCompanyId`,`personId`),
+  KEY `partner_company_person_person_id_fk` (`personId`),
+  CONSTRAINT `partner_company_person_company_id_fk` FOREIGN KEY (`partnerCompanyId`) REFERENCES `company` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `partner_company_person_person_id_fk` FOREIGN KEY (`personId`) REFERENCES `person` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `company_partner_person`
+--
+
+LOCK TABLES `company_partner_person` WRITE;
+/*!40000 ALTER TABLE `company_partner_person` DISABLE KEYS */;
+/*!40000 ALTER TABLE `company_partner_person` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `company_person`
+--
+
+DROP TABLE IF EXISTS `company_person`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `company_person` (
+  `companyId` bigint(20) NOT NULL,
+  `personId` bigint(20) NOT NULL,
+  PRIMARY KEY (`companyId`,`personId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `company_person`
+--
+
+LOCK TABLES `company_person` WRITE;
+/*!40000 ALTER TABLE `company_person` DISABLE KEYS */;
+/*!40000 ALTER TABLE `company_person` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `company_shop`
+--
+
+DROP TABLE IF EXISTS `company_shop`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `company_shop` (
+  `companyId` bigint(20) NOT NULL,
+  `shopId` bigint(20) NOT NULL,
+  PRIMARY KEY (`shopId`,`companyId`),
+  KEY `user_company_fk` (`companyId`),
+  CONSTRAINT `user_company_fk` FOREIGN KEY (`companyId`) REFERENCES `company` (`id`),
+  CONSTRAINT `user_company_shop_shop_id_fk` FOREIGN KEY (`shopId`) REFERENCES `shop` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `company_shop`
+--
+
+LOCK TABLES `company_shop` WRITE;
+/*!40000 ALTER TABLE `company_shop` DISABLE KEYS */;
+/*!40000 ALTER TABLE `company_shop` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -208,15 +312,14 @@ CREATE TABLE `cost` (
   `totalAmount` decimal(16,2) DEFAULT NULL,
   `remark` text,
   `companyId` bigint(20) DEFAULT NULL,
-  `shopId` bigint(20) DEFAULT NULL,
   `createdById` bigint(20) DEFAULT NULL,
   `createdDate` datetime DEFAULT CURRENT_TIMESTAMP,
   `processedDate` datetime DEFAULT NULL,
   `lastModifiedDate` datetime DEFAULT CURRENT_TIMESTAMP,
   `lastModifiedById` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `cost_companyId_shopId_createdById_processedDate_index` (`companyId`,`shopId`,`createdById`,`processedDate`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `cost_companyId_createdById_processedDate_index` (`companyId`,`createdById`,`processedDate`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,7 +346,9 @@ CREATE TABLE `cost_detail` (
   `amount` decimal(16,2) DEFAULT NULL,
   `price` decimal(16,2) DEFAULT NULL,
   `remark` text,
-  PRIMARY KEY (`costId`,`id`)
+  `unitId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`costId`,`id`),
+  CONSTRAINT `cost_detail_cost_id_fk` FOREIGN KEY (`costId`) REFERENCES `cost` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -337,6 +442,8 @@ CREATE TABLE `inventory` (
   `insertedDate` datetime DEFAULT NULL,
   `createdById` bigint(20) NOT NULL,
   `companyId` bigint(20) NOT NULL,
+  `totalProduct` int(11) DEFAULT NULL,
+  `remark` text,
   PRIMARY KEY (`id`),
   KEY `inventory_createdById_companyId_index` (`createdById`,`companyId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -364,7 +471,8 @@ CREATE TABLE `inventory_detail` (
   `productId` int(11) NOT NULL,
   `quantity` decimal(14,2) DEFAULT NULL,
   `remark` text,
-  PRIMARY KEY (`inventoryId`,`id`)
+  PRIMARY KEY (`inventoryId`,`id`),
+  CONSTRAINT `inventory_detail_inventory_id_fk` FOREIGN KEY (`inventoryId`) REFERENCES `inventory` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -375,6 +483,34 @@ CREATE TABLE `inventory_detail` (
 LOCK TABLES `inventory_detail` WRITE;
 /*!40000 ALTER TABLE `inventory_detail` DISABLE KEYS */;
 /*!40000 ALTER TABLE `inventory_detail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `inventory_summary`
+--
+
+DROP TABLE IF EXISTS `inventory_summary`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `inventory_summary` (
+  `warehouseId` bigint(20) NOT NULL,
+  `productId` bigint(20) NOT NULL,
+  `unitId` int(11) NOT NULL,
+  `quantity` decimal(16,2) DEFAULT '0.00',
+  `lastModifiedDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  `companyId` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`warehouseId`,`productId`,`unitId`),
+  KEY `inventory_summary_index` (`warehouseId`,`productId`,`unitId`,`companyId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inventory_summary`
+--
+
+LOCK TABLES `inventory_summary` WRITE;
+/*!40000 ALTER TABLE `inventory_summary` DISABLE KEYS */;
+/*!40000 ALTER TABLE `inventory_summary` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -427,7 +563,8 @@ CREATE TABLE `order_detail` (
   `amount` decimal(14,2) NOT NULL DEFAULT '0.00',
   `price` decimal(14,2) NOT NULL DEFAULT '0.00',
   `remark` text,
-  PRIMARY KEY (`orderId`,`id`)
+  PRIMARY KEY (`orderId`,`id`),
+  CONSTRAINT `order_detail_order_id_fk` FOREIGN KEY (`orderId`) REFERENCES `order` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -441,6 +578,37 @@ LOCK TABLES `order_detail` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `person`
+--
+
+DROP TABLE IF EXISTS `person`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `person` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `firstName` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `lastName` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
+  `gsm` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(150) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `address` varchar(250) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `birthday` date DEFAULT NULL,
+  `sex` tinyint(4) DEFAULT NULL,
+  `createdById` int(11) DEFAULT NULL,
+  `createdDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `person`
+--
+
+LOCK TABLES `person` WRITE;
+/*!40000 ALTER TABLE `person` DISABLE KEYS */;
+/*!40000 ALTER TABLE `person` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `product`
 --
 
@@ -451,8 +619,10 @@ CREATE TABLE `product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(250) NOT NULL,
   `imageId` bigint(20) DEFAULT NULL COMMENT 'Default image preview.',
-  `createdById` bigint(20) DEFAULT NULL,
+  `priceBaseUnit` decimal(16,2) DEFAULT NULL,
+  `remark` text,
   `companyId` bigint(20) DEFAULT NULL,
+  `createdById` bigint(20) DEFAULT NULL,
   `insertedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `product_name_index` (`name`)
@@ -501,7 +671,8 @@ DROP TABLE IF EXISTS `product_unit`;
 CREATE TABLE `product_unit` (
   `productId` bigint(20) DEFAULT NULL,
   `id` int(11) NOT NULL,
-  `name` varchar(50) DEFAULT NULL
+  `name` varchar(50) DEFAULT NULL,
+  `rate` decimal(10,2) DEFAULT '1.00'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -580,15 +751,13 @@ CREATE TABLE `user` (
   `imageUrl` text,
   `pwd` varchar(256) DEFAULT NULL,
   `insertedDate` datetime DEFAULT NULL,
-  `groupId` int(11) DEFAULT NULL,
+  `personId` bigint(20) DEFAULT NULL,
   `email_active` tinyint(1) NOT NULL DEFAULT '0',
   `gsm` varchar(20) DEFAULT NULL,
-  `address` varchar(250) DEFAULT NULL,
-  `sex` int(11) DEFAULT NULL,
-  `birthday` date DEFAULT NULL,
   `remark` text,
   `status` int(11) DEFAULT '1',
   `createdById` bigint(20) NOT NULL DEFAULT '0',
+  `groupId` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_email_uindex` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -600,7 +769,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` (`id`, `email`, `displayName`, `imageUrl`, `pwd`, `insertedDate`, `groupId`, `email_active`, `gsm`, `address`, `sex`, `birthday`, `remark`, `status`, `createdById`) VALUES (1,'lephuoccanh@gmail.com',NULL,NULL,'$2b$10$KuvTGT1Wv.qzDhy/Mc2EqO2YSnONjI.7V1Kqf9rGBuNTf/5e7M0jq','2020-07-03 18:32:04',2,1,NULL,NULL,NULL,NULL,NULL,1,0);
+INSERT INTO `user` (`id`, `email`, `displayName`, `imageUrl`, `pwd`, `insertedDate`, `personId`, `email_active`, `gsm`, `remark`, `status`, `createdById`, `groupId`) VALUES (1,'lephuoccanh@gmail.com',NULL,NULL,'$2b$10$KuvTGT1Wv.qzDhy/Mc2EqO2YSnONjI.7V1Kqf9rGBuNTf/5e7M0jq','2020-07-03 18:32:04',NULL,1,NULL,NULL,1,0,2);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -631,27 +800,27 @@ INSERT INTO `user_activate` (`id`, `user_id`, `active_code`, `date_inserted`) VA
 UNLOCK TABLES;
 
 --
--- Table structure for table `user_company_shop`
+-- Table structure for table `user_company`
 --
 
-DROP TABLE IF EXISTS `user_company_shop`;
+DROP TABLE IF EXISTS `user_company`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
-CREATE TABLE `user_company_shop` (
+CREATE TABLE `user_company` (
   `userId` bigint(20) NOT NULL,
   `companyId` bigint(20) NOT NULL,
-  `shopId` bigint(20) NOT NULL,
-  PRIMARY KEY (`userId`,`shopId`,`companyId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `type` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`userId`,`companyId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_company_shop`
+-- Dumping data for table `user_company`
 --
 
-LOCK TABLES `user_company_shop` WRITE;
-/*!40000 ALTER TABLE `user_company_shop` DISABLE KEYS */;
-/*!40000 ALTER TABLE `user_company_shop` ENABLE KEYS */;
+LOCK TABLES `user_company` WRITE;
+/*!40000 ALTER TABLE `user_company` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_company` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -679,6 +848,29 @@ CREATE TABLE `user_reset_password` (
 LOCK TABLES `user_reset_password` WRITE;
 /*!40000 ALTER TABLE `user_reset_password` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_reset_password` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_shop`
+--
+
+DROP TABLE IF EXISTS `user_shop`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `user_shop` (
+  `userId` bigint(20) NOT NULL,
+  `shopId` bigint(20) NOT NULL,
+  PRIMARY KEY (`userId`,`shopId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_shop`
+--
+
+LOCK TABLES `user_shop` WRITE;
+/*!40000 ALTER TABLE `user_shop` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_shop` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -716,4 +908,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-12 20:53:34
+-- Dump completed on 2020-07-16 11:22:47

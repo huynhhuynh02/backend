@@ -2,6 +2,7 @@ import express from 'express';
 import * as userService from '../../service/user/user.service';
 import {isAuthenticated} from '../middleware/permission';
 import {register, signIn} from "../../service/user/auth.service";
+import {appLog} from "../../config/winston";
 
 const auth = express.Router();
 
@@ -25,6 +26,7 @@ auth.get('/resendEmailActive', (req, res, next) => {
 auth.post('/sign-in', async (req, res, next) => {
   try {
     const resp = await signIn(req.body);
+    appLog.info(JSON.stringify(resp));
     return res.json(resp);
   } catch (e) {
     return next(e);
