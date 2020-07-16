@@ -1,7 +1,9 @@
 const Sequelize = require('sequelize');
 
+const {DataTypes} = Sequelize;
+
 export default class UserResetPassword extends Sequelize.Model {
-  static init(sequelize, DataTypes) {
+  static init(sequelize, opts) {
     return super.init(
       {
         id: {
@@ -19,7 +21,7 @@ export default class UserResetPassword extends Sequelize.Model {
         tableName: 'user_reset_password',
         modelName: 'user_reset_password',
         timestamps: false,
-        sequelize
+        sequelize, ...opts
       }
     );
   }

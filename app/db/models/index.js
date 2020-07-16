@@ -8,6 +8,8 @@ import ACLModule from "./acl/acl-module";
 import UserActivate from "./user/user-activate";
 import SystemProperty from "./system-property";
 import databaseConfig from '../../config/database';
+import UserResetPassword from './user/user-reset-password';
+import Asset from './asset';
 
 const Sequelize = require('sequelize');
 
@@ -24,10 +26,6 @@ const config = {
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 const models = {
-  User: User.init(sequelize),
-  UserActivate: UserActivate.init(sequelize),
-  EmailSend: EmailSend.init(sequelize),
-
   // ACL
   ACLAction: ACLAction.init(sequelize),
   ACLGroup: ACLGroup.init(sequelize),
@@ -35,6 +33,17 @@ const models = {
   ACLGroupActionShop: ACLGroupActionShop.init(sequelize),
   ACLModule: ACLModule.init(sequelize),
 
+  // Email
+  EmailSend: EmailSend.init(sequelize),
+
+  // User
+  User: User.init(sequelize),
+  UserActivate: UserActivate.init(sequelize),
+  UserResetPassword: UserResetPassword.init(sequelize),
+
+
+
+  Asset: Asset.init(sequelize),
   SystemProperty: SystemProperty.init(sequelize)
 };
 
