@@ -10,6 +10,11 @@ import SystemProperty from "./system-property";
 import databaseConfig from '../../config/database';
 import UserResetPassword from './user/user-reset-password';
 import Asset from './asset';
+import Company from './company/company';
+import CompanyOwnCompany from './company/company-own-company';
+import CompanyPartnerPerson from './company/company-partner-person';
+import CompanyPerson from './company/company-person';
+import CompanyShop from './company/company-shop';
 
 const Sequelize = require('sequelize');
 
@@ -32,6 +37,14 @@ const models = {
   ACLGroupAction: ACLGroupAction.init(sequelize),
   ACLGroupActionShop: ACLGroupActionShop.init(sequelize),
   ACLModule: ACLModule.init(sequelize),
+
+  // Company
+  Company: Company.init(sequelize),
+  CompanyOwnCompany: CompanyOwnCompany.init(sequelize),
+  CompanyPartnerPerson: CompanyPartnerPerson.init(sequelize),
+  CompanyPerson: CompanyPerson.init(sequelize),
+  CompanyShop: CompanyShop.init(sequelize),
+
 
   // Email
   EmailSend: EmailSend.init(sequelize),
