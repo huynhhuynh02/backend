@@ -720,10 +720,11 @@ DROP TABLE IF EXISTS `product_unit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `product_unit` (
-  `productId` bigint(20) DEFAULT NULL,
+  `productId` bigint(20) NOT NULL,
   `id` int(11) NOT NULL,
   `name` varchar(50) DEFAULT NULL,
-  `rate` decimal(10,2) DEFAULT '1.00'
+  `rate` decimal(10,2) DEFAULT '1.00',
+  PRIMARY KEY (`productId`,`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -959,4 +960,3 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-18  9:20:58
