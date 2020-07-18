@@ -1,3 +1,8 @@
+site_name: Yocto BankEnd Api
+repo_url: https://github.com/yocto-erp/backend
+repo_name: 'GitHub'
+copyright: 'MIT'
+theme: readthedocs
 nav:
   - Home: 'index.md'
   - About: 'about.md'
