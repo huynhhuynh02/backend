@@ -31,6 +31,7 @@ import Shop from './shop';
 import UserCompany from './user/user-company';
 import UserShop from './user/user-shop';
 import WareHouse from './warehouse';
+import Audit from './audit';
 
 const Sequelize = require('sequelize');
 
@@ -92,6 +93,8 @@ const models = {
 
   // Asset
   Asset: Asset.init(sequelize),
+  // Audit
+  Audit: Audit.init(sequelize),
   // Person
   Person: Person.init(sequelize),
   // Shop
