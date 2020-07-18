@@ -32,7 +32,7 @@ initMobileController(app);
 initWebAuthController(app);
 
 app.use((err, req, res, next) => {
-  appLog.error('error', 'Exception: ', err);
+  appLog.error(`message - ${err.message}, stack trace - ${err.stack}`);
   next(err);
 });
 

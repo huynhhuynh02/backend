@@ -1,8 +1,7 @@
-const Sequelize = require('sequelize');
+const { DataTypes, Model } = require('sequelize');
 const bcrypt = require('bcrypt');
 
 const saltRounds = 10;
-const {DataTypes} = Sequelize;
 
 export const USER_STATUS = Object.freeze({
   ACTIVE: 1,
@@ -15,7 +14,7 @@ export const USER_SEX = Object.freeze({
   OTHER: 2
 });
 
-export default class User extends Sequelize.Model {
+export default class User extends Model {
   static init(sequelize, opts) {
     return super.init(
       {
@@ -27,10 +26,6 @@ export default class User extends Sequelize.Model {
         insertedDate: {type: DataTypes.DATE},
         groupId: {type: DataTypes.INTEGER},
         email_active: {type: DataTypes.BOOLEAN},
-        address: {type: DataTypes.STRING(250)},
-        gsm: {type: DataTypes.STRING(20)},
-        sex: {type: DataTypes.INTEGER},
-        birthday: {type: DataTypes.DATEONLY},
         remark: {type: DataTypes.TEXT},
         status: {type: DataTypes.INTEGER},
         createdById: {type: DataTypes.BIGINT}

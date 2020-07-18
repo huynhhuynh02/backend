@@ -1,11 +1,20 @@
 import express from 'express';
 import * as userService from '../../service/user/user.service';
-import {isAuthenticated} from '../middleware/permission';
+import {hasPermission, isAuthenticated} from '../middleware/permission';
 import {register, signIn} from "../../service/user/auth.service";
+import {PERMISSION} from "../../db/models/acl/acl-action";
 
 const auth = express.Router();
 
-auth.get('/information', isAuthenticated, (req, res) => {
+auth.get('/information', isAuthenticated(), (req, res) => {
+  return res.status(200).json(req.user);
+});
+
+auth.get('/access-denied', hasPermission(PERMISSION.INVENTORY.READ), (req, res) => {
+  return res.status(200).json(req.user);
+});
+
+auth.get('/access-denies', hasPermission([PERMISSION.INVENTORY.READ, PERMISSION.ORDER.CREATE]), (req, res) => {
   return res.status(200).json(req.user);
 });
 

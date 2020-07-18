@@ -6,7 +6,7 @@ import {appLog} from "../../config/winston";
 
 const auth = express.Router();
 
-auth.get('/information', isAuthenticated, (req, res) => {
+auth.get('/information', isAuthenticated(), (req, res) => {
   return res.status(200).json(req.user);
 });
 
