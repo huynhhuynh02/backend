@@ -7,7 +7,7 @@ export default class OrderDetail extends Sequelize.Model{
     return super.init(
       {
         orderId: {type: DataTypes.BIGINT, primaryKey: true},
-        id: {type: DataTypes.INTEGER, primaryKey: true},
+        orderDetailId: {type: DataTypes.INTEGER, primaryKey: true},
         productId: {type: DataTypes.BIGINT},
         productUnitId: {type: DataTypes.INTEGER},
         quantity: {type: DataTypes.INTEGER},

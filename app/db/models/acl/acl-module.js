@@ -16,6 +16,7 @@ export default class ACLModule extends Sequelize.Model {
       },
       {
         tableName: 'acl_module',
+        modelName: 'aclModule',
         timestamps: false,
         ...opts,
         sequelize

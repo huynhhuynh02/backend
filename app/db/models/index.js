@@ -1,5 +1,5 @@
 import User from './user/user';
-import EmailSend from "./email/email_send";
+import EmailSend from "./email/email-send";
 import ACLAction from "./acl/acl-action";
 import ACLGroup from "./acl/acl-group";
 import ACLGroupAction from "./acl/acl-group-action";
@@ -11,8 +11,6 @@ import databaseConfig from '../../config/database';
 import UserResetPassword from './user/user-reset-password';
 import Asset from './asset';
 import Company from './company/company';
-import CompanyOwnCompany from './company/company-own-company';
-import CompanyPartnerPerson from './company/company-partner-person';
 import CompanyPerson from './company/company-person';
 import CompanyShop from './company/company-shop';
 import Cost from './cost/cost';
@@ -32,6 +30,10 @@ import UserCompany from './user/user-company';
 import UserShop from './user/user-shop';
 import WareHouse from './warehouse';
 import Audit from './audit';
+import OrderAsset from './order/order-asset';
+import PartnerCompany from './partner/partner-company';
+import PartnerCompanyPerson from './partner/partner-company-person';
+import PartnerPerson from './partner/partner-person';
 
 const Sequelize = require('sequelize');
 
@@ -57,8 +59,6 @@ const models = {
 
   // Company
   Company: Company.init(sequelize),
-  CompanyOwnCompany: CompanyOwnCompany.init(sequelize),
-  CompanyPartnerPerson: CompanyPartnerPerson.init(sequelize),
   CompanyPerson: CompanyPerson.init(sequelize),
   CompanyShop: CompanyShop.init(sequelize),
 
@@ -78,6 +78,12 @@ const models = {
   // Order
   Order: Order.init(sequelize),
   OrderDetail: OrderDetail.init(sequelize),
+  OrderAsset: OrderAsset.init(sequelize),
+
+  // Partner
+  PartnerCompany: PartnerCompany.init(sequelize),
+  PartnerCompanyPerson: PartnerCompanyPerson.init(sequelize),
+  PartnerPerson: PartnerPerson.init(sequelize),
 
   // Product
   Product: Product.init(sequelize),

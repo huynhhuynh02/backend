@@ -7,7 +7,8 @@ export default class Order extends Sequelize.Model{
     return super.init(
       {
         id: {type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true},
-        customerId: {type: DataTypes.BIGINT},
+        purchaseDate: {type: DataTypes.DATE},
+        partnerPersonId: {type: DataTypes.BIGINT},
         partnerCompanyId: {type: DataTypes.BIGINT},
         type: {type: DataTypes.TINYINT},
         companyId: {type: DataTypes.BIGINT},

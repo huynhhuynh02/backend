@@ -7,10 +7,11 @@ export default class InventoryDetail extends Sequelize.Model{
     return super.init(
       {
         inventoryId: {type: DataTypes.BIGINT, primaryKey: true},
-        id: {type: DataTypes.INTEGER, primaryKey: true},
-        productId: {type: DataTypes.BIGINT},
+        inventoryDetailId: {type: DataTypes.INTEGER, primaryKey: true},
+        productId: {type: DataTypes.INTEGER},
         quantity: {type: DataTypes.DECIMAL(14,2)},
-        remark: {type: DataTypes.TEXT}
+        remark: {type: DataTypes.TEXT},
+        unitId: {type: DataTypes.INTEGER}
       },
       {
         tableName: 'inventory_detail',

@@ -8,8 +8,8 @@ export default class Cost extends Sequelize.Model{
       {
         id: {type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true},
         name: {type: DataTypes.STRING(250)},
-        totalAmount: {type: DataTypes.DECIMAL(16, 2)},
-        remark: {type: DataTypes.TEXT},
+        type: {type: DataTypes.TINYINT},
+        amount: {type: DataTypes.DECIMAL(16, 2)},
         companyId: {type: DataTypes.BIGINT},
         createdById: {type: DataTypes.BIGINT},
         createdDate: {type: DataTypes.DATE},
@@ -17,7 +17,8 @@ export default class Cost extends Sequelize.Model{
         lastModifiedDate: {type: DataTypes.DATE},
         lastModifiedById: {type: DataTypes.BIGINT},
         partnerCompanyId: {type: DataTypes.BIGINT},
-        partnerPersonId: {type: DataTypes.BIGINT}
+        partnerPersonId: {type: DataTypes.BIGINT},
+        remark: {type: DataTypes.TEXT}
       },
       {
         tableName: 'cost',
