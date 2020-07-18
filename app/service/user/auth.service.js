@@ -60,8 +60,9 @@ export async function signIn({username, password}) {
     userPermission[`action${actionId}`].shopId = shopId;
   })
 
-  const token = jwt.sign(userJson, APP_CONFIG.JWT.secret);
   userJson.permissions = userPermission;
+  const token = jwt.sign(userJson, APP_CONFIG.JWT.secret);
+
   return {
     token,
     user: userJson

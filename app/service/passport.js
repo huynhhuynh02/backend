@@ -12,6 +12,8 @@ module.exports = function myPassport(passport) {
       maxAge: '1d'
     },
     function callBack(jwtPayload, cb) {
+      console.log('JWT check');
+      console.log(jwtPayload);
       return cb(null, jwtPayload);
     }
   ));
