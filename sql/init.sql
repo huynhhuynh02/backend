@@ -226,58 +226,6 @@ LOCK TABLES `company` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `company_own_company`
---
-
-DROP TABLE IF EXISTS `company_own_company`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `company_own_company` (
-  `companyId` bigint(20) NOT NULL,
-  `partnerCompanyId` bigint(20) NOT NULL,
-  PRIMARY KEY (`companyId`,`partnerCompanyId`),
-  KEY `company_partner___fk` (`partnerCompanyId`),
-  CONSTRAINT `company_own_id_fk` FOREIGN KEY (`companyId`) REFERENCES `company` (`id`),
-  CONSTRAINT `company_partner___fk` FOREIGN KEY (`partnerCompanyId`) REFERENCES `company` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `company_own_company`
---
-
-LOCK TABLES `company_own_company` WRITE;
-/*!40000 ALTER TABLE `company_own_company` DISABLE KEYS */;
-/*!40000 ALTER TABLE `company_own_company` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `company_partner_person`
---
-
-DROP TABLE IF EXISTS `company_partner_person`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `company_partner_person` (
-  `partnerCompanyId` bigint(20) NOT NULL,
-  `personId` bigint(20) NOT NULL,
-  PRIMARY KEY (`partnerCompanyId`,`personId`),
-  KEY `partner_company_person_person_id_fk` (`personId`),
-  CONSTRAINT `partner_company_person_company_id_fk` FOREIGN KEY (`partnerCompanyId`) REFERENCES `company` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `partner_company_person_person_id_fk` FOREIGN KEY (`personId`) REFERENCES `person` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `company_partner_person`
---
-
-LOCK TABLES `company_partner_person` WRITE;
-/*!40000 ALTER TABLE `company_partner_person` DISABLE KEYS */;
-/*!40000 ALTER TABLE `company_partner_person` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `company_person`
 --
 
@@ -336,8 +284,8 @@ DROP TABLE IF EXISTS `cost`;
 CREATE TABLE `cost` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(250) DEFAULT NULL,
-  `totalAmount` decimal(16,2) DEFAULT NULL,
-  `remark` text,
+  `type` tinyint(4) DEFAULT NULL COMMENT 'IN: 1\nOUT: 2',
+  `amount` decimal(16,2) DEFAULT NULL,
   `companyId` bigint(20) DEFAULT NULL,
   `createdById` bigint(20) DEFAULT NULL,
   `createdDate` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -346,6 +294,7 @@ CREATE TABLE `cost` (
   `lastModifiedById` bigint(20) DEFAULT NULL,
   `partnerCompanyId` bigint(20) DEFAULT NULL,
   `partnerPersonId` bigint(20) DEFAULT NULL,
+  `remark` text,
   PRIMARY KEY (`id`),
   KEY `cost_companyId_createdById_processedDate_index` (`companyId`,`createdById`,`processedDate`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -383,39 +332,6 @@ CREATE TABLE `cost_purpose` (
 LOCK TABLES `cost_purpose` WRITE;
 /*!40000 ALTER TABLE `cost_purpose` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cost_purpose` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `customer`
---
-
-DROP TABLE IF EXISTS `customer`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
-CREATE TABLE `customer` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(250) DEFAULT NULL,
-  `email` varchar(250) DEFAULT NULL,
-  `phone` varchar(250) DEFAULT NULL,
-  `address` text,
-  `remark` text,
-  `createdById` bigint(20) DEFAULT NULL,
-  `companyId` bigint(20) DEFAULT NULL,
-  `createdDate` datetime DEFAULT NULL,
-  `sex` int(11) DEFAULT NULL,
-  `birthday` date DEFAULT NULL,
-  `country` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `customer`
---
-
-LOCK TABLES `customer` WRITE;
-/*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-/*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -462,12 +378,13 @@ CREATE TABLE `inventory` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(250) DEFAULT NULL,
   `warehouseId` bigint(20) DEFAULT NULL,
-  `processedDate` datetime DEFAULT NULL,
-  `insertedDate` datetime DEFAULT NULL,
+  `type` tinyint(4) DEFAULT NULL COMMENT 'IN: 1\nOUT: 2',
+  `createdDate` datetime DEFAULT NULL,
   `createdById` bigint(20) NOT NULL,
   `companyId` bigint(20) NOT NULL,
   `totalProduct` int(11) DEFAULT NULL,
   `remark` text,
+  `processedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `inventory_createdById_companyId_index` (`createdById`,`companyId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -491,11 +408,12 @@ DROP TABLE IF EXISTS `inventory_detail`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `inventory_detail` (
   `inventoryId` bigint(20) NOT NULL,
-  `id` int(11) NOT NULL,
+  `inventoryDetailId` int(11) NOT NULL,
   `productId` int(11) NOT NULL,
   `quantity` decimal(14,2) DEFAULT NULL,
   `remark` text,
-  PRIMARY KEY (`inventoryId`,`id`),
+  `unitId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`inventoryId`,`inventoryDetailId`),
   CONSTRAINT `inventory_detail_inventory_id_fk` FOREIGN KEY (`inventoryId`) REFERENCES `inventory` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -572,7 +490,7 @@ DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `purchasedDate` datetime DEFAULT NULL,
-  `customerId` bigint(20) NOT NULL,
+  `partnerPersonId` bigint(20) NOT NULL,
   `partnerCompanyId` bigint(20) DEFAULT '0',
   `type` tinyint(4) DEFAULT NULL COMMENT '1: Purchase Order\n2: Sale Order',
   `companyId` datetime NOT NULL,
@@ -599,6 +517,32 @@ LOCK TABLES `order` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `order_asset`
+--
+
+DROP TABLE IF EXISTS `order_asset`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `order_asset` (
+  `orderId` bigint(20) NOT NULL,
+  `assetId` bigint(20) NOT NULL,
+  PRIMARY KEY (`orderId`,`assetId`),
+  KEY `order_asset_asset_id_fk` (`assetId`),
+  CONSTRAINT `order_asset_asset_id_fk` FOREIGN KEY (`assetId`) REFERENCES `asset` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `order_asset_order_id_fk` FOREIGN KEY (`orderId`) REFERENCES `order` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order_asset`
+--
+
+LOCK TABLES `order_asset` WRITE;
+/*!40000 ALTER TABLE `order_asset` DISABLE KEYS */;
+/*!40000 ALTER TABLE `order_asset` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `order_detail`
 --
 
@@ -607,14 +551,14 @@ DROP TABLE IF EXISTS `order_detail`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `order_detail` (
   `orderId` bigint(20) NOT NULL,
-  `id` int(11) NOT NULL,
+  `orderDetailId` int(11) NOT NULL,
   `productId` bigint(20) DEFAULT NULL,
   `productUnitId` int(11) NOT NULL,
   `quantity` int(11) NOT NULL DEFAULT '0',
   `amount` decimal(14,2) NOT NULL DEFAULT '0.00',
   `price` decimal(14,2) NOT NULL DEFAULT '0.00',
   `remark` text,
-  PRIMARY KEY (`orderId`,`id`),
+  PRIMARY KEY (`orderId`,`orderDetailId`),
   CONSTRAINT `order_detail_order_id_fk` FOREIGN KEY (`orderId`) REFERENCES `order` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -626,6 +570,81 @@ CREATE TABLE `order_detail` (
 LOCK TABLES `order_detail` WRITE;
 /*!40000 ALTER TABLE `order_detail` DISABLE KEYS */;
 /*!40000 ALTER TABLE `order_detail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `partner_company`
+--
+
+DROP TABLE IF EXISTS `partner_company`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `partner_company` (
+  `companyId` bigint(20) NOT NULL,
+  `partnerCompanyId` bigint(20) NOT NULL,
+  PRIMARY KEY (`companyId`,`partnerCompanyId`),
+  KEY `company_partner___fk` (`partnerCompanyId`),
+  CONSTRAINT `company_own_id_fk` FOREIGN KEY (`companyId`) REFERENCES `company` (`id`),
+  CONSTRAINT `company_partner___fk` FOREIGN KEY (`partnerCompanyId`) REFERENCES `company` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `partner_company`
+--
+
+LOCK TABLES `partner_company` WRITE;
+/*!40000 ALTER TABLE `partner_company` DISABLE KEYS */;
+/*!40000 ALTER TABLE `partner_company` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `partner_company_person`
+--
+
+DROP TABLE IF EXISTS `partner_company_person`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `partner_company_person` (
+  `partnerCompanyId` bigint(20) NOT NULL,
+  `personId` bigint(20) NOT NULL,
+  PRIMARY KEY (`partnerCompanyId`,`personId`),
+  KEY `partner_company_person_person_id_fk` (`personId`),
+  CONSTRAINT `partner_company_person_company_id_fk` FOREIGN KEY (`partnerCompanyId`) REFERENCES `company` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `partner_company_person_person_id_fk` FOREIGN KEY (`personId`) REFERENCES `person` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `partner_company_person`
+--
+
+LOCK TABLES `partner_company_person` WRITE;
+/*!40000 ALTER TABLE `partner_company_person` DISABLE KEYS */;
+/*!40000 ALTER TABLE `partner_company_person` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `partner_person`
+--
+
+DROP TABLE IF EXISTS `partner_person`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `partner_person` (
+  `companyId` bigint(20) NOT NULL,
+  `personId` bigint(20) NOT NULL,
+  PRIMARY KEY (`companyId`,`personId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `partner_person`
+--
+
+LOCK TABLES `partner_person` WRITE;
+/*!40000 ALTER TABLE `partner_person` DISABLE KEYS */;
+/*!40000 ALTER TABLE `partner_person` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -861,7 +880,6 @@ DROP TABLE IF EXISTS `user_company`;
 CREATE TABLE `user_company` (
   `userId` bigint(20) NOT NULL,
   `companyId` bigint(20) NOT NULL,
-  `type` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`userId`,`companyId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -960,3 +978,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+-- Dump completed on 2020-07-18 10:53:46
