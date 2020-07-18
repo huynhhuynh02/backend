@@ -6,3 +6,7 @@ theme: readthedocs
 nav:
   - Home: 'index.md'
   - About: 'about.md'
+  - Inventory:
+    - 'Summary': './inventory/summary.md'
+    - 'Warehouse In': './inventory/in.md'
+    - 'Warehouse Out': './inventory/out.md'
