@@ -13,7 +13,7 @@ export default class Product extends Sequelize.Model{
         remark: {type: DataTypes.TEXT},
         companyId: {type: DataTypes.BIGINT},
         createdById: {type: DataTypes.INTEGER},
-        insertedDate: {type: DataTypes.DATE}
+        createdDate: {type: DataTypes.DATE}
       },
       {
         tableName: 'product',

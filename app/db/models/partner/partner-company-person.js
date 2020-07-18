@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const {DataTypes} = Sequelize;
 
-export default class CompanyPartnerPerson extends Sequelize.Model{
+export default class PartnerCompanyPerson extends Sequelize.Model{
   static init(sequelize, opts) {
     return super.init(
       {
@@ -10,8 +10,8 @@ export default class CompanyPartnerPerson extends Sequelize.Model{
         personId: {type: DataTypes.BIGINT, primaryKey: true}
       },
       {
-        tableName: 'company_partner_person',
-        modelName: 'companyPartnerPerson',
+        tableName: 'partner_company_person',
+        modelName: 'partnerCompanyPerson',
         timestamps: false,
         sequelize, ...opts
       })
