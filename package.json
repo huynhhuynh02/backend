@@ -9,7 +9,8 @@
     "build": "babel app --out-dir dist && ncp app/template dist/template && ncp certificate dist/certificate",
     "start": "env-cmd nodemon --exec babel-node app/server.js",
     "serve": "node dist/server.js",
-    "test": "env-cmd -f test/.env mocha --recursive --timeout 10000"
+    "test": "mocha --recursive --timeout 10000 --exit",
+    "coverage": "nyc --reporter=html --reporter=text npm test"
   },
   "keywords": [
     "ERP",
@@ -69,7 +70,21 @@
     "mocha": "^8.0.1",
     "ncp": "^2.0.0",
     "nodemon": "^1.19.4",
+    "nyc": "^15.1.0",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2"
+  },
+  "nyc": {
+    "_comment": "Purpose of this part: to do code coverage within Mocha/Chai using Istanbul",
+    "register": "babel-register",
+    "include": [
+      "app/**/*.js"
+    ],
+    "exclude": [
+      "**/node_modules/**",
+      "**/test/**",
+      "**/coverage/**"
+    ],
+    "all": true
   }
 }
