@@ -2,7 +2,7 @@
 
 Create **Goods Issue Note** for one company to one warehouse
 
-**POST** : `/api/inventory/goods-Issue`
+**POST** : `/api/inventory/goods-issue`
 
 **Form Data**
 

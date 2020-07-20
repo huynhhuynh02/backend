@@ -8,5 +8,5 @@ nav:
   - About: 'about.md'
   - Inventory:
     - 'Summary': './inventory/summary.md'
-    - 'Warehouse In': './inventory/goods-receipt.md'
-    - 'Warehouse Out': './inventory/goods-issue.md'
+    - 'Goods Receipt': './inventory/goods-receipt.md'
+    - 'Goods Issue': './inventory/goods-issue.md'

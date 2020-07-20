@@ -1,3 +1,6 @@
+[![Coverage Status](https://coveralls.io/repos/github/yocto-erp/backend/badge.svg?branch=master)](https://coveralls.io/github/yocto-erp/backend?branch=master)
+[![Build Status](https://travis-ci.org/yocto-erp/backend.svg?branch=master)](https://travis-ci.org/yocto-erp/backend)
+
 Simple ERP for small business.
 
  - NodeJS 12
