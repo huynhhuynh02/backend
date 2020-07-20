@@ -452,6 +452,32 @@ LOCK TABLES `inventory_detail` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `inventory_detail_serial`
+--
+
+DROP TABLE IF EXISTS `inventory_detail_serial`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `inventory_detail_serial` (
+  `inventoryId` bigint(20) NOT NULL,
+  `inventoryDetailId` int(11) NOT NULL,
+  `serialCode` varchar(64) COLLATE utf8mb4_general_ci NOT NULL,
+  `quantity` int(11) DEFAULT '0',
+  PRIMARY KEY (`inventoryId`,`inventoryDetailId`,`serialCode`),
+  CONSTRAINT `inventory_detail_serial__fk` FOREIGN KEY (`inventoryId`, `inventoryDetailId`) REFERENCES `inventory_detail` (`inventoryId`, `inventoryDetailId`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inventory_detail_serial`
+--
+
+LOCK TABLES `inventory_detail_serial` WRITE;
+/*!40000 ALTER TABLE `inventory_detail_serial` DISABLE KEYS */;
+/*!40000 ALTER TABLE `inventory_detail_serial` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `inventory_purpose`
 --
 
@@ -484,14 +510,15 @@ DROP TABLE IF EXISTS `inventory_summary`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `inventory_summary` (
-  `warehouseId` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `productId` bigint(20) NOT NULL,
   `unitId` int(11) NOT NULL,
   `quantity` decimal(16,2) DEFAULT '0.00',
   `lastModifiedDate` datetime DEFAULT CURRENT_TIMESTAMP,
   `companyId` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`warehouseId`,`productId`,`unitId`),
-  KEY `inventory_summary_index` (`warehouseId`,`productId`,`unitId`,`companyId`)
+  `warehouseId` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `inventory_summary_index` (`warehouseId`,`productId`,`unitId`,`companyId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -502,6 +529,31 @@ CREATE TABLE `inventory_summary` (
 LOCK TABLES `inventory_summary` WRITE;
 /*!40000 ALTER TABLE `inventory_summary` DISABLE KEYS */;
 /*!40000 ALTER TABLE `inventory_summary` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `inventory_summary_serial`
+--
+
+DROP TABLE IF EXISTS `inventory_summary_serial`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `inventory_summary_serial` (
+  `inventorySummaryId` bigint(20) NOT NULL,
+  `serialCode` varchar(64) COLLATE utf8mb4_general_ci NOT NULL,
+  `quantity` int(11) DEFAULT '0',
+  PRIMARY KEY (`inventorySummaryId`,`serialCode`),
+  CONSTRAINT `inventory_serial_inventory_summary_id_fk` FOREIGN KEY (`inventorySummaryId`) REFERENCES `inventory_summary` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `inventory_summary_serial`
+--
+
+LOCK TABLES `inventory_summary_serial` WRITE;
+/*!40000 ALTER TABLE `inventory_summary_serial` DISABLE KEYS */;
+/*!40000 ALTER TABLE `inventory_summary_serial` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1003,4 +1055,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-20 15:10:08
+-- Dump completed on 2020-07-20 23:47:24

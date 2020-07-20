@@ -7,6 +7,6 @@ nav:
   - Home: 'index.md'
   - About: 'about.md'
   - Inventory:
-    - 'Summary': './inventory/summary.md'
+    - 'Inventory': './inventory/summary.md'
     - 'Goods Receipt': './inventory/goods-receipt.md'
     - 'Goods Issue': './inventory/goods-issue.md'
