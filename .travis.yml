@@ -13,4 +13,4 @@ before_script:
   - sudo mysql_upgrade
   - mysql --version
   - mysql -e 'CREATE DATABASE yocto_erp_test;'
-  - mysql -u root --password="" -p yocto_erp_test < sql/init.sql
+  - mysql -u root yocto_erp_test < sql/init.sql
