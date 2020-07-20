@@ -9,4 +9,3 @@ uploads/
 .DS_Store
 .nyc_output/
 coverage
-test/env.js
