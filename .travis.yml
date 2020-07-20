@@ -14,5 +14,7 @@ before_script:
   - mysql --version
   - mysql -e 'CREATE DATABASE yocto_erp_test;'
   - mysql -u root yocto_erp_test < sql/init.sql
+  - export COMMITTER_EMAIL="$(git log -1 $TRAVIS_COMMIT --pretty="%cE")"
+  - export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%aN")"
 after_script:
   - bash ./telegram_notification.sh

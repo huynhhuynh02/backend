@@ -28,7 +28,7 @@ send_msg "
 Travis build *${build_status}!*
 \`Repository:  ${TRAVIS_REPO_SLUG}\`
 \`Branch:      ${TRAVIS_BRANCH}\`
-\`Author:      ${author}\`
+\`Author:      ${AUTHOR_NAME} - ${COMMITTER_EMAIL}\`
 *Commit Msg:*
 ${TRAVIS_COMMIT_MESSAGE}
 [Job Log here](${TRAVIS_JOB_WEB_URL})
