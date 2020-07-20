@@ -18,3 +18,4 @@ before_script:
   - export AUTHOR_NAME="$(git log -1 $TRAVIS_COMMIT --pretty="%aN")"
 after_script:
   - bash ./telegram_notification.sh
+after_success: npm run coverage

@@ -10,7 +10,7 @@
     "start": "env-cmd nodemon --exec babel-node app/server.js",
     "serve": "node dist/server.js",
     "test": "mocha --recursive --timeout 10000 --exit",
-    "coverage": "nyc --reporter=html --reporter=text npm test"
+    "coverage": "nyc npm test && nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [
     "ERP",
@@ -59,6 +59,7 @@
     "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
+    "coveralls": "^3.1.0",
     "env-cmd": "^10.1.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.1",
