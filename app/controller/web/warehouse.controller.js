@@ -6,7 +6,7 @@ import { pagingParse } from '../middleware/paging.middleware';
 
 const warehouse = express.Router();
 
-warehouse.get('/',
+warehouse.get('/', hasPermission(PERMISSION.WAREHOUSE.READ),
   pagingParse({column: 'id', dir: 'asc'}),
   (req, res, next) => {
     return warehouses(req.query, req.paging.order, req.paging.offset, req.paging.size)

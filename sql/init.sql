@@ -38,7 +38,7 @@ CREATE TABLE `acl_action` (
 
 LOCK TABLES `acl_action` WRITE;
 /*!40000 ALTER TABLE `acl_action` DISABLE KEYS */;
-INSERT INTO `acl_action` VALUES (1,'Create Product',1,1,NULL),(2,'Read Product',1,1,NULL),(3,'Update Product',1,1,NULL),(4,'Delete Product',1,1,NULL),(5,'Create Customer',1,2,NULL),(6,'Read Customer',1,2,NULL),(7,'Update Customer',1,2,NULL),(8,'Delete Customer',1,2,NULL),(9,'Create Order',1,3,NULL),(10,'Read Order',2,3,NULL),(11,'Update Order',2,3,NULL),(12,'Delete Order',2,3,NULL),(13,'Create Inventory',1,4,NULL),(14,'Read Inventory',1,4,NULL),(15,'Update Inventory',1,4,NULL),(16,'Delete Inventory',1,4,NULL),(17,'Create Warehouse',1,5,NULL),(18,'Read Warehouse',1,5,NULL),(19,'Update Warehouse',1,5,NULL),(20,'Delete Warehouse',1,5,NULL);
+INSERT INTO `acl_action` VALUES (1,'Create Product',1,1,NULL),(2,'Read Product',1,1,NULL),(3,'Update Product',1,1,NULL),(4,'Delete Product',1,1,NULL),(5,'Create Customer',1,2,NULL),(6,'Read Customer',1,2,NULL),(7,'Update Customer',1,2,NULL),(8,'Delete Customer',1,2,NULL),(9,'Create Order',1,3,NULL),(10,'Read Order',2,3,NULL),(11,'Update Order',2,3,NULL),(12,'Delete Order',2,3,NULL),(13,'Create Inventory',1,4,NULL),(14,'Read Inventory',1,4,NULL),(15,'Update Inventory',1,4,NULL),(16,'Delete Inventory',1,4,NULL),(17,'Create Warehouse',1,5,NULL),(18,'Read Warehouse',1,5,NULL),(19,'Update Warehouse',1,5,NULL),(20,'Delete Warehouse',1,5,NULL),(21,'Create Company',1,6,NULL),(22,'Read Company',1,6,NULL),(23,'Update Company',1,6,NULL),(24,'Delete Company',1,6,NULL);
 /*!40000 ALTER TABLE `acl_action` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,7 +89,7 @@ CREATE TABLE `acl_group_action` (
 
 LOCK TABLES `acl_group_action` WRITE;
 /*!40000 ALTER TABLE `acl_group_action` DISABLE KEYS */;
-INSERT INTO `acl_group_action` VALUES (1,1,3),(1,2,3),(1,3,3),(1,4,3),(1,5,3),(1,6,3),(1,7,3),(1,8,3),(1,9,3),(1,10,3),(1,11,3),(1,12,3),(1,13,3),(1,14,3),(1,15,3),(1,16,3),(1,17,3),(1,18,3),(1,19,3),(1,20,3),(2,1,3),(2,2,3),(2,3,3),(2,4,3),(2,5,3),(2,6,3),(2,7,3),(2,8,3),(2,9,3),(2,10,3),(2,11,3),(2,12,3),(2,13,3),(2,14,3),(2,15,3),(2,16,3),(2,17,3),(2,18,3),(2,19,3),(2,20,3);
+INSERT INTO `acl_group_action` VALUES (1,1,3),(1,2,3),(1,3,3),(1,4,3),(1,5,3),(1,6,3),(1,7,3),(1,8,3),(1,9,3),(1,10,3),(1,11,3),(1,12,3),(1,13,3),(1,14,3),(1,15,3),(1,16,3),(1,17,3),(1,18,3),(1,19,3),(1,20,3),(1,21,3),(1,22,3),(1,23,3),(1,24,3),(2,1,3),(2,2,3),(2,3,3),(2,4,3),(2,5,3),(2,6,3),(2,7,3),(2,8,3),(2,9,3),(2,10,3),(2,11,3),(2,12,3),(2,13,3),(2,14,3),(2,15,3),(2,16,3),(2,17,3),(2,18,3),(2,19,3),(2,20,3),(2,21,3),(2,22,3),(2,23,3),(2,24,3);
 /*!40000 ALTER TABLE `acl_group_action` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +138,7 @@ CREATE TABLE `acl_module` (
 
 LOCK TABLES `acl_module` WRITE;
 /*!40000 ALTER TABLE `acl_module` DISABLE KEYS */;
-INSERT INTO `acl_module` VALUES (1,'Product','Manage product.'),(2,'Customer','Manage customer'),(3,'Order','Manage Order'),(4,'Inventory','Manage inventory'),(5,'WareHouse','Manage Warehouse');
+INSERT INTO `acl_module` VALUES (1,'Product','Manage Product.'),(2,'Customer','Manage Customer'),(3,'Order','Manage Order'),(4,'Inventory','Manage Inventory'),(5,'WareHouse','Manage Warehouse'),(6,'Company','Manage Company');
 /*!40000 ALTER TABLE `acl_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -821,7 +821,7 @@ CREATE TABLE `user` (
   `displayName` varchar(250) DEFAULT NULL,
   `imageUrl` text,
   `pwd` varchar(256) DEFAULT NULL,
-  `insertedDate` datetime DEFAULT NULL,
+  `createdDate` datetime DEFAULT NULL,
   `personId` bigint DEFAULT NULL,
   `email_active` tinyint(1) NOT NULL DEFAULT '0',
   `gsm` varchar(20) DEFAULT NULL,
@@ -978,4 +978,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-18 18:48:31
+-- Dump completed on 2020-07-20 14:29:44

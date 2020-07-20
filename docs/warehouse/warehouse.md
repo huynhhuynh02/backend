@@ -1,8 +1,8 @@
 # Search Warehouse
 
-Return list of Warehouse Input/Output for displaying on table.
+Return list of Warehouse for displaying on table.
 
-**GET** : `/api/warehouse?name&title&dateFrom&dateTo`
+**GET** : `/api/warehouse?name`
 
 **Params**:
 
