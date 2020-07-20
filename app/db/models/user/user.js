@@ -23,7 +23,7 @@ export default class User extends Model {
         displayName: {type: DataTypes.STRING(250)},
         imageUrl: {type: DataTypes.TEXT},
         pwd: {type: DataTypes.STRING(256)},
-        insertedDate: {type: DataTypes.DATE},
+        createdDate: {type: DataTypes.DATE},
         groupId: {type: DataTypes.INTEGER},
         email_active: {type: DataTypes.BOOLEAN},
         remark: {type: DataTypes.TEXT},
