@@ -1,0 +1,39 @@
+import express from 'express';
+import { warehouses, createWarehouse, removeWarehouse, updateWarehouse } from '../../service/warehouse.service';
+import { hasPermission } from '../middleware/permission';
+import {PERMISSION} from "../../db/models/acl/acl-action";
+import { pagingParse } from '../middleware/paging.middleware';
+
+const warehouse = express.Router();
+
+warehouse.get('/',
+  pagingParse({column: 'id', dir: 'asc'}),
+  (req, res, next) => {
+    return warehouses(req.query, req.paging.order, req.paging.offset, req.paging.size)
+      .then((t) => {
+        res.status(200).json(t);
+      }).catch(next);
+  });
+
+warehouse.post('/create', hasPermission(PERMISSION.WAREHOUSE.CREATE), (req, res, next) => {
+  return createWarehouse(req.body)
+    .then((newWareHouse) => {
+      res.json(newWareHouse);
+    }, next);
+});
+
+warehouse.post('/:wId', hasPermission(PERMISSION.WAREHOUSE.UPDATE), (req, res, next) => {
+  return updateWarehouse(req.params.wId, req.body)
+    .then(result => res.status(200).json(result))
+    .catch(next);
+});
+
+warehouse.delete('/:wId', hasPermission(PERMISSION.WAREHOUSE.DELETE), (req, res, next) => {
+  return removeWarehouse(req.params.wId)
+    .then(result => res.status(200).json(result))
+    .catch(next);
+});
+
+export function initWebWarehouseController(app) {
+  app.use('/api/warehouse', warehouse);
+}

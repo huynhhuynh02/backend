@@ -6,8 +6,9 @@ import appConf from './config/application';
 
 import {FormError, isSystemError} from './config/error';
 import {loadConfigure} from "./config/system";
-import {initWebAuthController} from "./controller/web/auth.controller";
+import { initWebController } from './controller/web';
 import {initMobileController} from "./controller/mobile";
+
 
 const passport = require('passport');
 
@@ -29,7 +30,7 @@ app.get('/', (req, res) => res.send({message: 'Welcome to the default API route'
 initMobileController(app);
 
 /* WEB */
-initWebAuthController(app);
+initWebController(app);
 
 app.use((err, req, res, next) => {
   appLog.error(`message - ${err.message}, stack trace - ${err.stack}`);
