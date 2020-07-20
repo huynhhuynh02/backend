@@ -14,3 +14,5 @@ before_script:
   - mysql --version
   - mysql -e 'CREATE DATABASE yocto_erp_test;'
   - mysql -u root yocto_erp_test < sql/init.sql
+after_script:
+  - bash ./telegram_notification.sh
