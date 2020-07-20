@@ -1,3 +1,6 @@
+CREATE DATABASE IF NOT EXISTS `yocto_erp_test` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `yocto_erp_test`;
+
 -- MySQL dump 10.13  Distrib 8.0.16, for macos10.14 (x86_64)
 --
 -- Host: 127.0.0.1    Database: yocto_erp

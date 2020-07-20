@@ -12,3 +12,11 @@ before_script:
   - sudo systemctl restart mysql
   - sudo mysql_upgrade
   - mysql --version
+  - mysql -u root --password="" < sql/init.sql
+env:
+  - DB_HOST = "127.0.0.1"
+  - DB_USERNAME = "root"
+  - DB_PASSWORD = ""
+  - DB_NAME = "yocto_erp_test"
+  - WEB_URL = "http://localhost:4201"
+  - NODE_ENV = "test"
