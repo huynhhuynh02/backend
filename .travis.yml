@@ -12,11 +12,6 @@ before_script:
   - sudo systemctl restart mysql
   - sudo mysql_upgrade
   - mysql --version
+  - mysql -e 'CREATE DATABASE yocto_erp_test;'
+  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('12345678') WHERE user='root';\nupdate user set plugin='mysql_native_password';\nFLUSH PRIVILEGES;\n" | mysql -u root
   - mysql -u root --password="" < sql/init.sql
-env:
-  - DB_HOST = "127.0.0.1"
-  - DB_USERNAME = "root"
-  - DB_PASSWORD = ""
-  - DB_NAME = "yocto_erp_test"
-  - WEB_URL = "http://localhost:4201"
-  - NODE_ENV = "test"
