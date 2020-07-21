@@ -34,6 +34,9 @@ import OrderAsset from './order/order-asset';
 import PartnerCompany from './partner/partner-company';
 import PartnerCompanyPerson from './partner/partner-company-person';
 import PartnerPerson from './partner/partner-person';
+import InventoryDetailSerial from './inventory/inventory-detail-serial';
+import BusinessAction from './business-action';
+import InventorySummarySerial from './inventory/inventory-summary-serial';
 
 const Sequelize = require('sequelize');
 
@@ -74,6 +77,8 @@ const models = {
   InventoryDetail: InventoryDetail.init(sequelize),
   InventoryPurpose: InventoryPurpose.init(sequelize),
   InventorySummary: InventorySummary.init(sequelize),
+  InventoryDetailSerial: InventoryDetailSerial.init(sequelize),
+  InventorySummarySerial: InventorySummarySerial.init(sequelize),
 
   // Order
   Order: Order.init(sequelize),
@@ -99,6 +104,8 @@ const models = {
 
   // Asset
   Asset: Asset.init(sequelize),
+  // BusinessAction
+  BusinessAction: BusinessAction.init(sequelize),
   // Audit
   Audit: Audit.init(sequelize),
   // Person

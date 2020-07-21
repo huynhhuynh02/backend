@@ -6,9 +6,10 @@ export default class InventorySummary extends Sequelize.Model{
   static init(sequelize, opts) {
     return super.init(
       {
-        warehouseId: {type: DataTypes.BIGINT, primaryKey: true},
-        productId: {type: DataTypes.BIGINT, primaryKey: true},
-        unitId: {type: DataTypes.INTEGER, primaryKey: true},
+        id: {type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true},
+        warehouseId: {type: DataTypes.BIGINT},
+        productId: {type: DataTypes.BIGINT},
+        unitId: {type: DataTypes.INTEGER},
         quantity: {type: DataTypes.DECIMAL(16,2)},
         lastModifiedDate: {type: DataTypes.DATE},
         companyId: {type: DataTypes.BIGINT}
