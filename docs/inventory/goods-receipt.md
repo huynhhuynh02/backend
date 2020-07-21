@@ -22,7 +22,8 @@ Return list of Warehouse Goods Receipt/Issue for displaying on table.
       "type": "",
       "purposeId": "integer",
       "relative": {
-
+        "id": "",
+        "name": ""
       },
       "createdDate": "",
       "totalProduct": "",
@@ -102,7 +103,7 @@ Code : `200`
   "createdDate": "",
   "purposeId": "integer",
   "relativeId": "integer",
-  "relation": {
+  "relative": {
     "id": "integer",
     "name": "string",
     "more": "..."
