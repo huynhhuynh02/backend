@@ -21,4 +21,13 @@ export default class Company extends Sequelize.Model{
         sequelize, ...opts
       })
   }
+
+  static associate(models) {
+    this.belongsToMany(models.User, {
+      through: models.UserCompany,
+      foreignKey: 'companyId',
+      otherKey: 'userId',
+      as: 'companyUsers'
+    });
+  }
 }

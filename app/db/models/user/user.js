@@ -63,6 +63,12 @@ export default class User extends Model {
       sourceKey: 'groupId',
       as: 'shopPermissions'
     });
+    this.belongsToMany(models.Company, {
+      through: models.UserCompany,
+      foreignKey: 'userId',
+      otherKey: 'companyId',
+      as: 'userCompanies'
+    });
   }
 
   toJSON() {

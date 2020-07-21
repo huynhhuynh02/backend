@@ -30,7 +30,8 @@ export async function signIn({username, password}) {
     },
     include: [
       {model: db.ACLGroupAction, as: 'permissions'},
-      {model: db.ACLGroupActionShop, as: 'shopPermissions'}
+      {model: db.ACLGroupActionShop, as: 'shopPermissions'},
+      {model: db.Company, as: 'userCompanies'}
     ]
   });
   if (!user) {
@@ -47,7 +48,7 @@ export async function signIn({username, password}) {
   }
   const userJson = user.get({plain: true});
   appLog.info(userJson);
-  const {permissions, shopPermissions} = userJson;
+  const {permissions, shopPermissions, userCompanies} = userJson;
   const userPermission = {};
   permissions.forEach(perm => {
     const {actionId, type} = perm;
@@ -60,7 +61,13 @@ export async function signIn({username, password}) {
     userPermission[`action${actionId}`].shopId = shopId;
   })
 
+  let userCompany = null;
+  if (userCompanies.length > 0) {
+    userCompany = userCompanies[0].id;
+  }
+
   userJson.permissions = userPermission;
+  userJson.userCompanies = userCompany;
   const token = jwt.sign(userJson, APP_CONFIG.JWT.secret);
 
   return {

@@ -2,7 +2,7 @@ import express from 'express';
 import { hasPermission } from '../../middleware/permission';
 import { pagingParse } from '../../middleware/paging.middleware';
 import { PERMISSION } from '../../../db/models/acl/acl-action';
-import { inventories } from '../../../service/inventory/inventory.service';
+import { inventories, createInventoryGoodsReceipt } from '../../../service/inventory/inventory.service';
 
 const inventory = express.Router();
 
@@ -15,12 +15,12 @@ inventory.get('/', hasPermission(PERMISSION.INVENTORY.READ),
       }).catch(next);
   });
 
-// inventory.post('/create', hasPermission(PERMISSION.WAREHOUSE.CREATE), (req, res, next) => {
-//   return createWarehouse(req.body)
-//     .then((newWareHouse) => {
-//       res.json(newWareHouse);
-//     }, next);
-// });
+inventory.post('/goods-receipt', hasPermission(PERMISSION.INVENTORY.CREATE), (req, res, next) => {
+  return createInventoryGoodsReceipt(req.body)
+    .then((newInventory) => {
+      res.json(newInventory);
+    }, next);
+});
 //
 // inventory.post('/:wId', hasPermission(PERMISSION.WAREHOUSE.UPDATE), (req, res, next) => {
 //   return updateWarehouse(req.params.wId, req.body)

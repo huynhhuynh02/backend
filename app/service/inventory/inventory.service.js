@@ -43,3 +43,26 @@ export function inventories(search, order, offset, limit) {
     limit
   });
 }
+
+
+export async function createInventoryGoodsReceipt(createForm) {
+  return db.sequelize.transaction()
+    .then(async (transaction) => {
+      try {
+        const inventory = await db.Inventory.create({
+          warehouseId: createForm.warehouseId,
+          name: createForm.name,
+          remark: createForm.remark,
+          purposeId: createForm.purposeId,
+          relativeId:  createForm.relativeId,
+          processedDate: new Date()
+        }, transaction);
+
+        await transaction.commit();
+        return inventory;
+      } catch (error) {
+        await transaction.rollback();
+        throw error;
+      }
+    });
+}

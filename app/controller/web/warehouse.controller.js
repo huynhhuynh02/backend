@@ -15,8 +15,9 @@ warehouse.get('/', hasPermission(PERMISSION.WAREHOUSE.READ),
       }).catch(next);
   });
 
-warehouse.post('/create', hasPermission(PERMISSION.WAREHOUSE.CREATE), (req, res, next) => {
-  return createWarehouse(req.body)
+warehouse.post('/', hasPermission(PERMISSION.WAREHOUSE.CREATE), (req, res, next) => {
+  const companyId = req.user.userCompanies;
+  return createWarehouse(companyId, req.body)
     .then((newWareHouse) => {
       res.json(newWareHouse);
     }, next);

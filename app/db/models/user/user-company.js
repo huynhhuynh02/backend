@@ -7,8 +7,7 @@ export default class UserCompany extends Sequelize.Model{
     return super.init(
       {
         userId: {type: DataTypes.BIGINT, primaryKey: true},
-        companyId: {type: DataTypes.BIGINT, primaryKey: true},
-        type: {type: DataTypes.TINYINT}
+        companyId: {type: DataTypes.BIGINT, primaryKey: true}
       },
       {
         tableName: 'user_company',

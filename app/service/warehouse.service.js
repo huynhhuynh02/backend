@@ -22,13 +22,16 @@ export function warehouses(search, order, offset, limit) {
   });
 }
 
-export function createWarehouse(createForm) {
+export function createWarehouse(companyId, createForm) {
+  if (!companyId) {
+    throw new HttpError(HTTP_ERROR.NOT_FOUND, 'User have not company');
+  }
   return db.WareHouse.create(
     {
       name: createForm.name,
       address: createForm.address,
       userId: createForm.userId,
-      companyId: createForm.companyId
+      companyId: companyId
     }
   )
 }
@@ -45,8 +48,7 @@ export async function updateWarehouse(wId, updateForm) {
   await warehouse.update({
     name: updateForm.name,
     address: updateForm.address,
-    userId: updateForm.userId,
-    companyId: updateForm.companyId
+    userId: updateForm.userId
   });
 
   return warehouse;
