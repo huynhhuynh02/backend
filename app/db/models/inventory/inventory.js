@@ -2,6 +2,13 @@ const Sequelize = require('sequelize');
 
 const {DataTypes} = Sequelize;
 
+export const INVENTORY_TYPE  = {
+  OUT: 1,
+  IN: 2
+  // Goods Receipt = IN
+  // Goods Issue = OUT
+};
+
 export default class Inventory extends Sequelize.Model{
   static init(sequelize, opts) {
     return super.init(
@@ -24,4 +31,13 @@ export default class Inventory extends Sequelize.Model{
         sequelize, ...opts
       })
   }
+
+
+  static associate(models) {
+    this.hasMany(models.InventoryDetail, {
+      foreignKey: 'inventoryId',
+      as: 'details'
+    });
+  }
+
 }

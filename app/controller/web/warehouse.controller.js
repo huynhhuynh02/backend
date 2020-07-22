@@ -1,5 +1,11 @@
 import express from 'express';
-import { warehouses, createWarehouse, removeWarehouse, updateWarehouse } from '../../service/warehouse.service';
+import {
+  warehouses,
+  createWarehouse,
+  removeWarehouse,
+  updateWarehouse,
+  getWarehouse
+} from '../../service/warehouse.service';
 import { hasPermission } from '../middleware/permission';
 import {PERMISSION} from "../../db/models/acl/acl-action";
 import { pagingParse } from '../middleware/paging.middleware';
@@ -15,6 +21,12 @@ warehouse.get('/', hasPermission(PERMISSION.WAREHOUSE.READ),
       }).catch(next);
   });
 
+warehouse.get('/:wId(\\d+)', hasPermission(PERMISSION.WAREHOUSE.READ), (req, res, next) => {
+  return getWarehouse(req.params.wId)
+    .then(result => res.status(200).json(result))
+    .catch(next);
+});
+
 warehouse.post('/', hasPermission(PERMISSION.WAREHOUSE.CREATE), (req, res, next) => {
   const companyId = req.user.userCompanies;
   return createWarehouse(companyId, req.body)
@@ -23,13 +35,13 @@ warehouse.post('/', hasPermission(PERMISSION.WAREHOUSE.CREATE), (req, res, next)
     }, next);
 });
 
-warehouse.post('/:wId', hasPermission(PERMISSION.WAREHOUSE.UPDATE), (req, res, next) => {
+warehouse.post('/:wId(\\d+)', hasPermission(PERMISSION.WAREHOUSE.UPDATE), (req, res, next) => {
   return updateWarehouse(req.params.wId, req.body)
     .then(result => res.status(200).json(result))
     .catch(next);
 });
 
-warehouse.delete('/:wId', hasPermission(PERMISSION.WAREHOUSE.DELETE), (req, res, next) => {
+warehouse.delete('/:wId(\\d+)', hasPermission(PERMISSION.WAREHOUSE.DELETE), (req, res, next) => {
   return removeWarehouse(req.params.wId)
     .then(result => res.status(200).json(result))
     .catch(next);

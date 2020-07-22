@@ -1,5 +1,5 @@
 import db from '../db/models';
-import { HTTP_ERROR, HttpError } from '../config/error';
+import { badRequest, FIELD_ERROR } from '../config/error';
 
 const {Op} = db.Sequelize;
 
@@ -22,9 +22,17 @@ export function warehouses(search, order, offset, limit) {
   });
 }
 
+export function getWarehouse(wId) {
+  return db.WareHouse.findOne({
+    where: {
+      id: wId
+    }
+  })
+}
+
 export function createWarehouse(companyId, createForm) {
   if (!companyId) {
-    throw new HttpError(HTTP_ERROR.NOT_FOUND, 'User have not company');
+    throw badRequest('companyId', FIELD_ERROR.INVALID, 'User have not company');
   }
   return db.WareHouse.create(
     {
@@ -43,7 +51,7 @@ export async function updateWarehouse(wId, updateForm) {
     }
   });
   if (!warehouse) {
-    throw new HttpError(HTTP_ERROR.NOT_FOUND, 'Invalid Warehouse');
+    throw badRequest('warehouse', FIELD_ERROR.INVALID, 'Warehouse not found');
   }
   await warehouse.update({
     name: updateForm.name,

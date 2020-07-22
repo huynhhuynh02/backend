@@ -2,6 +2,9 @@ import { initWebAuthController } from './auth.controller';
 import { initWebWarehouseController } from './warehouse.controller';
 import { initWebCompanyController } from './company/company.controller';
 import { initWebInventoryController } from './inventory/inventory.controller';
+import { initWebInventoryGoodReceiptController } from './inventory/goods-receipt.controller';
+import { initWebInventoryGoodIssueController } from './inventory/goods-issue.controller';
+
 
 
 export function initWebController(app) {
@@ -9,4 +12,6 @@ export function initWebController(app) {
   initWebWarehouseController(app);
   initWebCompanyController(app);
   initWebInventoryController(app);
+  initWebInventoryGoodReceiptController(app);
+  initWebInventoryGoodIssueController(app);
 }
