@@ -10,8 +10,7 @@ nav:
     - 'Inventory': './inventory/index.md'
     - 'Goods Receipt': './inventory/goods-receipt.md'
     - 'Goods Issue': './inventory/goods-issue.md'
-  - Warehouse:
-    - 'Warehouse': './warehouse/warehouse.md'
+  - 'Warehouse': './warehouse/warehouse.md'
   - Order:
     - Purchase: './order/purchase-order.md'
     - Sale: './order/sale-order.md'

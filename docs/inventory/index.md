@@ -49,6 +49,7 @@ Return list of Inventory Products.
  - productId: Select from List of Company's Product
 
 **Success Response**
+
 ```json
 {
   "id": 123,
@@ -72,3 +73,4 @@ Return list of Inventory Products.
   "remark": "",
   "lastModifiedDate": ""
 }
+```
