@@ -11,6 +11,9 @@ nav:
     - 'Goods Issue': './inventory/goods-issue.md'
   - Warehouse:
     - 'Warehouse': './warehouse/warehouse.md'
+  - Order:
+    - Purchase: './order/purchase-order.md'
+    - Sale: './order/sale-order.md'
   - 'Cost Management': 'cost-management.md'
   - Image: 'image.md'
   - About: 'about.md'
