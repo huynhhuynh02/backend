@@ -5,10 +5,12 @@ copyright: 'MIT'
 theme: readthedocs
 nav:
   - Home: 'index.md'
-  - About: 'about.md'
   - Inventory:
     - 'Inventory': './inventory/summary.md'
     - 'Goods Receipt': './inventory/goods-receipt.md'
     - 'Goods Issue': './inventory/goods-issue.md'
   - Warehouse:
     - 'Warehouse': './warehouse/warehouse.md'
+  - 'Cost Management': 'cost-management.md'
+  - Image: 'image.md'
+  - About: 'about.md'
