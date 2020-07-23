@@ -5,8 +5,9 @@ copyright: 'MIT'
 theme: readthedocs
 nav:
   - Home: 'index.md'
+  - 'Product Management': './product.md'
   - Inventory:
-    - 'Inventory': './inventory/summary.md'
+    - 'Inventory': './inventory/index.md'
     - 'Goods Receipt': './inventory/goods-receipt.md'
     - 'Goods Issue': './inventory/goods-issue.md'
   - Warehouse:

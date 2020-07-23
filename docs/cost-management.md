@@ -1,3 +1,5 @@
+Receipt, payment management in company.
+
 # Search Receipt/Payment voucher
 
 Return list of Receipt/Payment voucher.

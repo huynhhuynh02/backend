@@ -1,6 +1,6 @@
 # Inventory Summary
 
-Return list of Inventory Goods summary for displaying on table.
+Return list of Inventory Goods.
 
 **GET** : `/api/inventory/summary?warehouseId&productId`
 
