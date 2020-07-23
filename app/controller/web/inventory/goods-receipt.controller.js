@@ -7,6 +7,7 @@ import {
   removeInventory,
   updateInventory
 } from '../../../service/inventory/inventory.service';
+import { INVENTORY_TYPE } from '../../../db/models/inventory/inventory';
 
 const goodsReceipt = express.Router();
 
@@ -18,14 +19,16 @@ goodsReceipt.get('/:id(\\d+)', hasPermission(PERMISSION.INVENTORY.READ), (req, r
 
 goodsReceipt.post('/', hasPermission(PERMISSION.INVENTORY.CREATE), (req, res, next) => {
   const userId = req.user.id;
-  return createInventory(userId, req.body)
+  const type = INVENTORY_TYPE.IN;
+  return createInventory(userId, type, req.body)
     .then((newInventory) => {
       res.json(newInventory);
     }, next);
 });
 
 goodsReceipt.post('/:id(\\d+)', hasPermission(PERMISSION.INVENTORY.UPDATE), (req, res, next) => {
-  return updateInventory(req.params.id, req.body)
+  const type = INVENTORY_TYPE.IN;
+  return updateInventory(req.params.id, type, req.body)
     .then(result => res.status(200).json(result))
     .catch(next);
 });

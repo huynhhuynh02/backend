@@ -5,8 +5,8 @@ const {DataTypes} = Sequelize;
 export const INVENTORY_TYPE  = {
   OUT: 1,
   IN: 2
-  // Goods Receipt = IN
   // Goods Issue = OUT
+  // Goods Receipt = IN
 };
 
 export default class Inventory extends Sequelize.Model{

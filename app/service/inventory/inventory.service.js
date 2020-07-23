@@ -47,16 +47,20 @@ export function inventories(search, order, offset, limit) {
 }
 
 export async function getInventory(inventoryId) {
-  return db.Inventory.findOne({
+  const inventory = await db.Inventory.findOne({
     where: {
       id: inventoryId
     }, include: [
       {model: db.InventoryDetail, as: 'details'}
     ]
-  })
+  });
+  if (!inventory) {
+    throw badRequest('inventory', FIELD_ERROR.INVALID, 'inventory not found');
+  }
+  return inventory;
 }
 
-export async function createInventory(userId, createForm) {
+export async function createInventory(userId, type, createForm) {
   const transaction = await db.sequelize.transaction();
   try {
     const inventory = await db.Inventory.create({
@@ -66,6 +70,7 @@ export async function createInventory(userId, createForm) {
       purposeId: createForm.purposeId,
       relativeId:  createForm.relativeId,
       companyId:  createForm.companyId,
+      type:  type,
       processedDate: new Date(),
       createdById: userId
     }, {transaction});
@@ -90,7 +95,7 @@ export async function createInventory(userId, createForm) {
   }
 }
 
-export async function updateInventory(inventoryId, updateForm) {
+export async function updateInventory(inventoryId, type, updateForm) {
   const existedInventory = await db.Inventory.findByPk(inventoryId);
   if (!existedInventory) {
     throw badRequest('inventory', FIELD_ERROR.INVALID, 'inventory not found');
@@ -102,6 +107,7 @@ export async function updateInventory(inventoryId, updateForm) {
     existedInventory.remark = updateForm.remark;
     existedInventory.purposeId = updateForm.purposeId;
     existedInventory.relativeId = updateForm.relativeId;
+    existedInventory.type = updateForm.type;
 
     // get list inventory detail
     const listOldInventoryDetail = await db.InventoryDetail.findAll({

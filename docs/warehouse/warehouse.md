@@ -6,10 +6,7 @@ Return list of Warehouse for displaying on table.
 
 **Params**:
 
- - warehouseId: Select from List of company's warehouse
- - title: User input search string
- - dateFrom: Javascript date string
- - dateTo:  Javascript date string
+ - name: User input search string
 
 **Success Response**
 ```json
@@ -17,41 +14,31 @@ Return list of Warehouse for displaying on table.
   "count": "integer",
   "rows": [
     {
-      "id": 123,
+      "id": 1,
       "name": "",
-      "type": "",
-      "createdDate": "",
-      "totalProduct": "",
-      "remark": "",
-      "processedDate": ""
+      "address": "",
+      "userId": "",
+      "companyId": ""
     }
   ]
 }
 ```
 
 
-# Create Warehouse In
+# Create Warehouse
 
-Create **Warehouse In** for one company to one warehouse
+Create **Warehouse ** for one company to one warehouse
 
-**POST** : `/api/warehouse/in`
+**POST** : `/api/warehouse`
 
 **Form Data**
 
 ```json
 {
-  "warehouseId": "bigInteger",
   "name": "string (max 250)",
-  "remark": "string",
-  "processedDate": "javascript date string, must smaller than current date time.",
-  "details": [
-    {
-      "productId": "big integer",
-      "unitId": "integer",
-      "quantity": "decimal",
-      "remark": ""
-    }
-  ]
+  "address": "string",
+  "userId": "integer",
+  "companyId": "integer"
 }
 ```
 
@@ -69,10 +56,9 @@ Code : `200`
 {
   "id": 123,
   "name": "",
-  "type": "",
-  "createdDate": "",
+  "address": "",
+  "userId": "",
   "totalProduct": "",
-  "remark": "",
-  "processedDate": ""
+  "companyId": ""
 }
 ```

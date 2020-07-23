@@ -10,3 +10,5 @@ nav:
     - 'Inventory': './inventory/summary.md'
     - 'Goods Receipt': './inventory/goods-receipt.md'
     - 'Goods Issue': './inventory/goods-issue.md'
+  - Warehouse:
+    - 'Warehouse': './warehouse/warehouse.md'

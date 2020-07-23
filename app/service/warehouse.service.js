@@ -22,12 +22,16 @@ export function warehouses(search, order, offset, limit) {
   });
 }
 
-export function getWarehouse(wId) {
-  return db.WareHouse.findOne({
+export async function getWarehouse(wId) {
+  const warehouse = await db.WareHouse.findOne({
     where: {
       id: wId
     }
-  })
+  });
+  if (!warehouse) {
+    throw badRequest('warehouse', FIELD_ERROR.INVALID, 'warehouse not found');
+  }
+  return warehouse;
 }
 
 export function createWarehouse(companyId, createForm) {
