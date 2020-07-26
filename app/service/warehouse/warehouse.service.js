@@ -1,5 +1,5 @@
-import db from '../db/models';
-import { badRequest, FIELD_ERROR } from '../config/error';
+import db from '../../db/models';
+import { badRequest, FIELD_ERROR } from '../../config/error';
 
 const {Op} = db.Sequelize;
 

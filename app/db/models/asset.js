@@ -8,6 +8,7 @@ export default class Asset extends Sequelize.Model{
       {
         id: {type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true},
         name: {type: DataTypes.STRING(250)},
+        ext: {type: DataTypes.STRING(250)},
         size: {type: DataTypes.INTEGER},
         type: {type: DataTypes.STRING(50)},
         fileId: {type: DataTypes.STRING(64)},

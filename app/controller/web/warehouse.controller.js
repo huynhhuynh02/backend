@@ -5,7 +5,7 @@ import {
   removeWarehouse,
   updateWarehouse,
   getWarehouse
-} from '../../service/warehouse.service';
+} from '../../service/warehouse/warehouse.service';
 import { hasPermission } from '../middleware/permission';
 import {PERMISSION} from "../../db/models/acl/acl-action";
 import { pagingParse } from '../middleware/paging.middleware';

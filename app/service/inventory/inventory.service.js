@@ -75,18 +75,20 @@ export async function createInventory(userId, type, createForm) {
       createdById: userId
     }, {transaction});
 
-    for (let i = 0; i < createForm.details.length; i += 1) {
-      // eslint-disable-next-line no-await-in-loop
-      await db.InventoryDetail.create(
-        {
-          inventoryId: inventory.id,
-          inventoryDetailId: i + 1,
-          productId: createForm.details[i].productId,
-          unitId: createForm.details[i].unitId,
-          quantity: createForm.details[i].quantity,
-          remark: createForm.details[i].remark
-        }, {transaction});
+    if (createForm.details && createForm.details.length) {
+      await db.InventoryDetail.bulkCreate(createForm.details.map((result, index) => {
+          return {
+            inventoryId: inventory.id,
+            inventoryDetailId: index + 1,
+            productId: result.productId,
+            unitId: result.unitId,
+            quantity: result.quantity,
+            remark: result.remark
+          }
+        }),{ transaction }
+      );
     }
+
     await transaction.commit();
     return inventory;
   } catch (error) {
@@ -125,17 +127,18 @@ export async function updateInventory(inventoryId, type, updateForm) {
       }
     );
 
-    for (let i = 0; i < updateForm.details.length; i += 1) {
-      // eslint-disable-next-line no-await-in-loop
-      await db.InventoryDetail.create(
-        {
-          inventoryId: existedInventory.id,
-          inventoryDetailId: i + 1,
-          productId: updateForm.details[i].productId,
-          unitId: updateForm.details[i].unitId,
-          quantity: updateForm.details[i].quantity,
-          remark: updateForm.details[i].remark
-        }, {transaction});
+    if (updateForm.details && updateForm.details.length) {
+      await db.InventoryDetail.bulkCreate(updateForm.details.map((result, index) => {
+          return {
+            inventoryId: existedInventory.id,
+            inventoryDetailId: index + 1,
+            productId: result.productId,
+            unitId: result.unitId,
+            quantity: result.quantity,
+            remark: result.remark
+          }
+        }),{ transaction }
+      );
     }
 
     await existedInventory.save(transaction);

@@ -22,4 +22,8 @@ export default class Product extends Sequelize.Model{
         sequelize, ...opts
       })
   }
+
+  static associate (models) {
+    this.belongsTo(models.User, { foreignKey: 'createdById', as: 'createdBy' });
+  }
 }

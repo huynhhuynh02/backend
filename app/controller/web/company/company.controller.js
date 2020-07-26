@@ -6,7 +6,7 @@ import { PERMISSION } from '../../../db/models/acl/acl-action';
 
 const company = express.Router();
 
-company.get('/', hasPermission(PERMISSION.COMPANY.READ),
+company.get('/',
   pagingParse({column: 'id', dir: 'asc'}),
   (req, res, next) => {
     return companies(req.query, req.paging.order, req.paging.offset, req.paging.size)
@@ -15,7 +15,7 @@ company.get('/', hasPermission(PERMISSION.COMPANY.READ),
       }).catch(next);
   });
 
-company.post('/create', hasPermission(PERMISSION.COMPANY.CREATE), (req, res, next) => {
+company.post('/create', (req, res, next) => {
   const userId = req.user.id;
   return createCompany(userId, req.body)
     .then((newWareHouse) => {
@@ -23,13 +23,13 @@ company.post('/create', hasPermission(PERMISSION.COMPANY.CREATE), (req, res, nex
     }, next);
 });
 
-company.post('/:cId', hasPermission(PERMISSION.COMPANY.UPDATE), (req, res, next) => {
+company.post('/:cId', (req, res, next) => {
   return updateCompany(req.params.cId, req.body)
     .then(result => res.status(200).json(result))
     .catch(next);
 });
 
-company.delete('/:cId', hasPermission(PERMISSION.COMPANY.DELETE), (req, res, next) => {
+company.delete('/:cId', (req, res, next) => {
   return removeCompany(req.params.cId)
     .then(result => res.status(200).json(result))
     .catch(next);
