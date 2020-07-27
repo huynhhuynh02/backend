@@ -1,7 +1,7 @@
 import db from '../../db/models';
 import User from '../../db/models/user/user';
 import { badRequest, FIELD_ERROR } from '../../config/error';
-import { createAsset } from '../asset/asset.service';
+import { createProductAsset } from '../asset/asset.service';
 
 const {Op} = db.Sequelize;
 
@@ -58,7 +58,7 @@ export async function createProduct(userId, createForm) {
     }, {transaction});
 
     if (createForm.assets && createForm.assets.length) {
-       await createAsset(product.id, createForm.assets, transaction);
+       await createProductAsset(product.id, createForm.assets, transaction);
     }
 
     if (createForm.units && createForm.units.length) {
