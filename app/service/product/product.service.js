@@ -1,7 +1,9 @@
 import db from '../../db/models';
 import User from '../../db/models/user/user';
 import { badRequest, FIELD_ERROR } from '../../config/error';
-import { createProductAsset } from '../asset/asset.service';
+import { createProductAsset, removeProductAsset } from '../asset/asset.service';
+import { createProductUnit, removeProductUnit } from './product-unit.service';
+import cost from '../../db/models/cost/cost';
 
 const {Op} = db.Sequelize;
 
@@ -62,17 +64,44 @@ export async function createProduct(userId, createForm) {
     }
 
     if (createForm.units && createForm.units.length) {
-      await db.ProductUnit.bulkCreate(createForm.units.map((result, index) => {
-        return {
-          id: index + 1,
-          productId: product.id,
-          name: result.name,
-          rate: result.rate
-        }
-      }), {transaction})
+      await createProductUnit(product.id, createForm.units, transaction);
     }
     await transaction.commit();
     return product;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+
+}
+
+export async function updateProduct(pId, updateForm) {
+
+  const existedProduct = await db.Product.findByPk(pId);
+  if (!existedProduct) {
+    throw badRequest('product', FIELD_ERROR.INVALID, 'product not found');
+  }
+  const transaction = await db.sequelize.transaction();
+  try {
+    await existedProduct.update({
+      name: updateForm.name,
+      remark: updateForm.remark,
+      priceBaseUnit: updateForm.priceBaseUnit,
+      companyId: updateForm.companyId
+    }, transaction);
+
+    if (updateForm.assets && updateForm.assets.length) {
+      await removeProductAsset(existedProduct.id, transaction);
+      await createProductAsset(existedProduct.id, updateForm.assets, transaction);
+    }
+
+    if (updateForm.units && updateForm.units.length) {
+      await removeProductUnit(existedProduct.id, transaction);
+      await createProductUnit(existedProduct.id, updateForm.units, transaction);
+    }
+
+    await transaction.commit();
+    return existedProduct;
   } catch (error) {
     await transaction.rollback();
     throw error;

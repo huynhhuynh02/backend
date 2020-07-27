@@ -49,21 +49,14 @@ export function createWarehouse(companyId, createForm) {
 }
 
 export async function updateWarehouse(wId, updateForm) {
-  const warehouse = await db.WareHouse.findByPk({
-    where: {
-      id: wId
-    }
-  });
+  const warehouse = await db.WareHouse.findByPk(wId);
   if (!warehouse) {
     throw badRequest('warehouse', FIELD_ERROR.INVALID, 'Warehouse not found');
   }
-  await warehouse.update({
-    name: updateForm.name,
-    address: updateForm.address,
-    userId: updateForm.userId
-  });
-
-  return warehouse;
+  warehouse.name = updateForm.name;
+  warehouse.address = updateForm.address;
+  warehouse.userId = updateForm.userId;
+  return warehouse.save();
 }
 
 export function removeWarehouse (wId) {

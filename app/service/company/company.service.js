@@ -1,5 +1,5 @@
 import db from '../../db/models';
-import { HTTP_ERROR, HttpError } from '../../config/error';
+import { badRequest, FIELD_ERROR, HTTP_ERROR, HttpError } from '../../config/error';
 
 const {Op} = db.Sequelize;
 
@@ -22,6 +22,18 @@ export function companies(search, order, offset, limit) {
   });
 }
 
+export async function getCompany(cId) {
+  const company = await db.Company.findOne({
+    where: {
+      id: cId
+    }
+  });
+  if (!company) {
+    throw badRequest('company', FIELD_ERROR.INVALID, 'company not found');
+  }
+  return company;
+}
+
 export function createCompany(userId, createForm) {
   return db.Company.create(
     {
@@ -36,22 +48,15 @@ export function createCompany(userId, createForm) {
 }
 
 export async function updateCompany(cId, updateForm) {
-  const company = await db.Company.findByPk({
-    where: {
-      id: cId
-    }
-  });
+  const company = await db.Company.findByPk(cId);
   if (!company) {
     throw new HttpError(HTTP_ERROR.NOT_FOUND, 'Invalid Company');
   }
-  await company.update({
-    name: updateForm.name,
-    gsm: updateForm.gsm,
-    address: updateForm.address,
-    remark: updateForm.remark
-  });
-
-  return company;
+  company.name = updateForm.name;
+  company.gsm = updateForm.gsm;
+  company.address =  updateForm.address;
+  company.remark = updateForm.remark;
+  return company.save();
 }
 
 export function removeCompany (cId) {

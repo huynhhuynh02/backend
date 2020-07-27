@@ -1,5 +1,11 @@
 import express from 'express';
-import { companies, createCompany, removeCompany, updateCompany } from '../../../service/company/company.service';
+import {
+  companies,
+  createCompany,
+  getCompany,
+  removeCompany,
+  updateCompany
+} from '../../../service/company/company.service';
 import { pagingParse } from '../../middleware/paging.middleware';
 import { hasPermission } from '../../middleware/permission';
 import { PERMISSION } from '../../../db/models/acl/acl-action';
@@ -14,6 +20,12 @@ company.get('/',
         res.status(200).json(t);
       }).catch(next);
   });
+
+company.get('/:id(\\d+)', (req, res, next) => {
+  return getCompany(req.params.id)
+    .then(result => res.status(200).json(result))
+    .catch(next);
+});
 
 company.post('/create', (req, res, next) => {
   const userId = req.user.id;
