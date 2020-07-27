@@ -21,4 +21,9 @@ export default class InventorySummary extends Sequelize.Model{
         sequelize, ...opts
       })
   }
+
+  static associate (models) {
+    this.belongsTo(models.WareHouse, { foreignKey: 'warehouseId', as: 'warehouse' });
+    this.belongsTo(models.Product, { foreignKey: 'productId', as: 'product' });
+  }
 }
