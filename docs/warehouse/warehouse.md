@@ -91,7 +91,7 @@ Code : `200`
 
 Get ** Warehouse ** by ID
 
-**GET** : `/api/warehouse/{wId}`
+**GET** : `/api/warehouse/{id}`
 
 **Success Response**
 
