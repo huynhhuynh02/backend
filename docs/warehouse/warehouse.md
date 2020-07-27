@@ -135,7 +135,7 @@ Code : `200`
 
 Update ** Warehouse **
 
-**POST** : `/api/warehouse/{wId}`
+**POST** : `/api/warehouse/{id}`
 
 **Form Data**
 
@@ -181,7 +181,7 @@ Code : `200`
 
 Delete **Warehouse**
 
-**DELETE** : `/api/warehouse/{wId}`
+**DELETE** : `/api/warehouse/{id}`
 
 **Process**
  - Check user permission (check owner or full), if owner check id is belong to user or not.

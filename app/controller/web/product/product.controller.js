@@ -15,6 +15,7 @@ product.get('/',  hasPermission(PERMISSION.PRODUCT.READ),
       }).catch(next);
   });
 
+
 product.post('/', hasPermission(PERMISSION.PRODUCT.CREATE), (req, res, next) => {
   const userId = req.user.id;
   return createProduct(userId, req.body)
@@ -23,8 +24,8 @@ product.post('/', hasPermission(PERMISSION.PRODUCT.CREATE), (req, res, next) => 
     }, next);
 });
 
-product.delete('/:pId',  hasPermission(PERMISSION.PRODUCT.DELETE),  (req, res, next) => {
-  return removeProduct(req.params.pId)
+product.delete('/:id(\\d+)',  hasPermission(PERMISSION.PRODUCT.DELETE),  (req, res, next) => {
+  return removeProduct(req.params.id)
     .then(result => res.status(200).json(result))
     .catch(next);
 });

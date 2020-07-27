@@ -21,8 +21,8 @@ warehouse.get('/', hasPermission(PERMISSION.WAREHOUSE.READ),
       }).catch(next);
   });
 
-warehouse.get('/:wId(\\d+)', hasPermission(PERMISSION.WAREHOUSE.READ), (req, res, next) => {
-  return getWarehouse(req.params.wId)
+warehouse.get('/:id(\\d+)', hasPermission(PERMISSION.WAREHOUSE.READ), (req, res, next) => {
+  return getWarehouse(req.params.id)
     .then(result => res.status(200).json(result))
     .catch(next);
 });
@@ -35,14 +35,14 @@ warehouse.post('/', hasPermission(PERMISSION.WAREHOUSE.CREATE), (req, res, next)
     }, next);
 });
 
-warehouse.post('/:wId(\\d+)', hasPermission(PERMISSION.WAREHOUSE.UPDATE), (req, res, next) => {
-  return updateWarehouse(req.params.wId, req.body)
+warehouse.post('/:id(\\d+)', hasPermission(PERMISSION.WAREHOUSE.UPDATE), (req, res, next) => {
+  return updateWarehouse(req.params.id, req.body)
     .then(result => res.status(200).json(result))
     .catch(next);
 });
 
-warehouse.delete('/:wId(\\d+)', hasPermission(PERMISSION.WAREHOUSE.DELETE), (req, res, next) => {
-  return removeWarehouse(req.params.wId)
+warehouse.delete('/:id(\\d+)', hasPermission(PERMISSION.WAREHOUSE.DELETE), (req, res, next) => {
+  return removeWarehouse(req.params.id)
     .then(result => res.status(200).json(result))
     .catch(next);
 });

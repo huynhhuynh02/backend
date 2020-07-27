@@ -23,14 +23,14 @@ company.post('/create', (req, res, next) => {
     }, next);
 });
 
-company.post('/:cId', (req, res, next) => {
-  return updateCompany(req.params.cId, req.body)
+company.post('/:id(\\d+)', (req, res, next) => {
+  return updateCompany(req.params.id, req.body)
     .then(result => res.status(200).json(result))
     .catch(next);
 });
 
-company.delete('/:cId', (req, res, next) => {
-  return removeCompany(req.params.cId)
+company.delete('/:id(\\d+)', (req, res, next) => {
+  return removeCompany(req.params.id)
     .then(result => res.status(200).json(result))
     .catch(next);
 });
