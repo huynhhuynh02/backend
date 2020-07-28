@@ -10,7 +10,7 @@ export function inventories(search, order, offset, limit) {
     if (search.warehouseId) {
       where.warehouseId = search.warehouseId;
     }
-    if (search.title && search.title.length > 0) {
+    if (search.title && search.title.length) {
       where = {
         title: {
           [Op.like]: `%${search.title}%`

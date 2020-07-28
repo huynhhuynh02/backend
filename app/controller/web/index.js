@@ -6,6 +6,8 @@ import { initWebInventoryGoodReceiptController } from './inventory/goods-receipt
 import { initWebInventoryGoodIssueController } from './inventory/goods-issue.controller';
 import { initWebProductController } from './product/product.controller';
 import { initWebInventorySummaryController } from './inventory/inventory-summary.controller';
+import { initWebOrderPurchaseController } from './order/purchase.controller';
+import { initWebOrderSaleController } from './order/sale.controller';
 
 export function initWebController(app) {
   initWebAuthController(app);
@@ -16,4 +18,6 @@ export function initWebController(app) {
   initWebInventoryGoodIssueController(app);
   initWebInventorySummaryController(app);
   initWebProductController(app);
+  initWebOrderPurchaseController(app);
+  initWebOrderSaleController(app);
 }

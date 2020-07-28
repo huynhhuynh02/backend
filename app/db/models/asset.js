@@ -29,5 +29,11 @@ export default class Asset extends Sequelize.Model{
       otherKey: 'productId',
       as: 'products'
     });
+    this.belongsToMany(models.Order, {
+      through: models.ProductAsset,
+      foreignKey: 'assetId',
+      otherKey: 'orderId',
+      as: 'orders'
+    });
   }
 }

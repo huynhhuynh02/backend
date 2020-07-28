@@ -2,6 +2,12 @@ const Sequelize = require('sequelize');
 
 const {DataTypes} = Sequelize;
 
+
+export const ORDER_TYPE  = {
+  SALE: 1,
+  PURCHASE: 2
+};
+
 export default class Order extends Sequelize.Model{
   static init(sequelize, opts) {
     return super.init(
@@ -26,5 +32,19 @@ export default class Order extends Sequelize.Model{
         timestamps: false,
         sequelize, ...opts
       })
+  }
+
+  static associate (models) {
+    this.belongsTo(models.User, { foreignKey: 'createdById', as: 'createdBy' });
+    this.belongsToMany(models.Asset, {
+      through: models.OrderAsset,
+      foreignKey: 'orderId',
+      otherKey: 'assetId',
+      as: 'assets'
+    });
+    this.hasMany(models.OrderDetail, {
+      foreignKey: 'orderId',
+      as: 'details'
+    });
   }
 }
