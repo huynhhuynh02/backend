@@ -51,14 +51,14 @@ export async function removeProductAsset(productId, transaction) {
       id: productId
     },
     include: [
-      {model: db.Asset, as: 'productAssets'}
+      {model: db.Asset, as: 'assets'}
     ],
     transaction
   });
 
-  if (product && product.productAssets.length) {
-    for (let i = 0; i < product.productAssets.length; i += 1) {
-      fs.unlinkSync(`${ASSET_STORE_FOLDER}/${product.productAssets[i].fileId}`, (err) => {
+  if (product && product.assets.length) {
+    for (let i = 0; i < product.assets.length; i += 1) {
+      fs.unlinkSync(`${ASSET_STORE_FOLDER}/${product.assets[i].fileId}`, (err) => {
         if (err) {
           console.log(err);
         }
@@ -66,7 +66,7 @@ export async function removeProductAsset(productId, transaction) {
       // eslint-disable-next-line no-await-in-loop
       await db.Asset.destroy({
           where: {
-            id: product.productAssets[i].id
+            id: product.assets[i].id
           },
           transaction
         },

@@ -29,7 +29,8 @@ export default class Product extends Sequelize.Model{
       through: models.ProductAsset,
       foreignKey: 'productId',
       otherKey: 'assetId',
-      as: 'productAssets'
+      as: 'assets'
     });
+    this.hasMany(models.ProductUnit, { foreignKey: 'productId', as: 'units' });
   }
 }

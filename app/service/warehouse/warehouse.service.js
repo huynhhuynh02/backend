@@ -59,8 +59,12 @@ export async function updateWarehouse(wId, updateForm) {
   return warehouse.save();
 }
 
-export function removeWarehouse (wId) {
+export async function removeWarehouse (wId) {
+  const warehouse = await db.WareHouse.findByPk(wId);
+  if (!warehouse) {
+    throw badRequest('warehouse', FIELD_ERROR.INVALID, 'Warehouse not found');
+  }
   return db.WareHouse.destroy({
-    where: { id: wId }
+    where: { id: warehouse.id }
   });
 }

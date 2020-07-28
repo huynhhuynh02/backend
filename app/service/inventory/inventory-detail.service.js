@@ -1,7 +1,7 @@
 import db from '../../db/models';
 
 export function createInventoryDetail(inventoryId, inventoryDetailsForm, transaction) {
-  return  db.InventoryDetail.bulkCreate(inventoryDetailsForm.map((result, index) => {
+  return db.InventoryDetail.bulkCreate(inventoryDetailsForm.map((result, index) => {
       return {
         inventoryId: inventoryId,
         inventoryDetailId: index + 1,
@@ -15,7 +15,7 @@ export function createInventoryDetail(inventoryId, inventoryDetailsForm, transac
 }
 
 export function removeInventoryDetail(inventoryId, transaction) {
-   db.InventoryDetail.destroy(
+  return db.InventoryDetail.destroy(
     {
       where: {
         inventoryId: inventoryId

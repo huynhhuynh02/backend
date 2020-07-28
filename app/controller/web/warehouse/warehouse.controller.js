@@ -5,10 +5,10 @@ import {
   removeWarehouse,
   updateWarehouse,
   getWarehouse
-} from '../../service/warehouse/warehouse.service';
-import { hasPermission } from '../middleware/permission';
-import {PERMISSION} from "../../db/models/acl/acl-action";
-import { pagingParse } from '../middleware/paging.middleware';
+} from '../../../service/warehouse/warehouse.service';
+import { hasPermission } from '../../middleware/permission';
+import {PERMISSION} from "../../../db/models/acl/acl-action";
+import { pagingParse } from '../../middleware/paging.middleware';
 
 const warehouse = express.Router();
 

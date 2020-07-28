@@ -3,7 +3,6 @@ import User from '../../db/models/user/user';
 import { badRequest, FIELD_ERROR } from '../../config/error';
 import { createProductAsset, removeProductAsset } from '../asset/asset.service';
 import { createProductUnit, removeProductUnit } from './product-unit.service';
-import cost from '../../db/models/cost/cost';
 
 const {Op} = db.Sequelize;
 
@@ -36,7 +35,11 @@ export async function getProduct(pId) {
   const product = await db.Product.findOne({
     where: {
       id: pId
-    }
+    },
+    include: [
+      {model: db.Asset, as: 'assets', attributes: ['fileId']},
+      {model: db.ProductUnit, as: 'units'}
+    ]
   });
   if (!product) {
     throw badRequest('product', FIELD_ERROR.INVALID, 'product not found');
@@ -109,8 +112,22 @@ export async function updateProduct(pId, updateForm) {
 
 }
 
-export function removeProduct (pId) {
-  return db.Product.destroy({
-    where: { id: pId }
-  });
+export async function removeProduct(productId) {
+  const checkProduct = await db.Product.findByPk(productId);
+  if (!checkProduct) {
+    throw badRequest('product', FIELD_ERROR.INVALID, 'product not found');
+  }
+  const transaction = await db.sequelize.transaction();
+  try {
+    await removeProductAsset(checkProduct.id, transaction);
+    await removeProductUnit(checkProduct.id, transaction);
+    const product = db.Product.destroy({
+      where: { id: checkProduct.id }
+    }, {transaction});
+    await transaction.commit();
+    return product;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
 }

@@ -12,7 +12,7 @@ import { INVENTORY_TYPE } from '../../../db/models/inventory/inventory';
 const goodsReceipt = express.Router();
 
 goodsReceipt.get('/:id(\\d+)', hasPermission(PERMISSION.INVENTORY.GOODS_RECEIPT.READ), (req, res, next) => {
-  return getInventory(req.params.inventoryId)
+  return getInventory(req.params.id)
     .then(result => res.status(200).json(result))
     .catch(next);
 });

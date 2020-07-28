@@ -1,8 +1,7 @@
 import db from '../../db/models';
+import { badRequest, FIELD_ERROR } from '../../config/error';
 
-const {Op} = db.Sequelize;
-
-export function inventorySummary(search, order, offset, limit) {
+export function inventorySummaries(search, order, offset, limit) {
   const where = {};
   if (search) {
     if (search.warehouseId) {
@@ -16,9 +15,29 @@ export function inventorySummary(search, order, offset, limit) {
     order,
     where,
     include: [
-      {model: db.InventoryDetail, as: 'details'}
+      {model: db.WareHouse, as: 'warehouse'},
+      {model: db.Product, as: 'product'},
+      {model: db.ProductUnit, as: 'unit'}
     ],
     offset,
     limit
   });
+}
+
+
+export async function getDetailInventorySummary(inventorySummaryId) {
+  const checkInventorySummary = await db.InventorySummary.findOne({
+    where: {
+      id: inventorySummaryId
+    },
+    include: [
+      {model: db.WareHouse, as: 'warehouse'},
+      {model: db.Product, as: 'product'},
+      {model: db.ProductUnit, as: 'unit'}
+    ]
+  });
+  if (!checkInventorySummary) {
+    throw badRequest('InventorySummary', FIELD_ERROR.INVALID, 'inventory summary not found');
+  }
+  return checkInventorySummary;
 }

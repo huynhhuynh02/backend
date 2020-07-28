@@ -27,7 +27,7 @@ export default class Asset extends Sequelize.Model{
       through: models.ProductAsset,
       foreignKey: 'assetId',
       otherKey: 'productId',
-      as: 'assetProducts'
+      as: 'products'
     });
   }
 }
