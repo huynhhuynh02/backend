@@ -1,7 +1,8 @@
 import db from '../../db/models';
 import User from '../../db/models/user/user';
 import { badRequest, FIELD_ERROR } from '../../config/error';
-import { createProductAsset } from '../asset/asset.service';
+import { createProductAsset, removeProductAsset } from '../asset/asset.service';
+import { createProductUnit, removeProductUnit } from './product-unit.service';
 
 const {Op} = db.Sequelize;
 
@@ -34,7 +35,11 @@ export async function getProduct(pId) {
   const product = await db.Product.findOne({
     where: {
       id: pId
-    }
+    },
+    include: [
+      {model: db.Asset, as: 'assets', attributes: ['fileId']},
+      {model: db.ProductUnit, as: 'units'}
+    ]
   });
   if (!product) {
     throw badRequest('product', FIELD_ERROR.INVALID, 'product not found');
@@ -62,14 +67,7 @@ export async function createProduct(userId, createForm) {
     }
 
     if (createForm.units && createForm.units.length) {
-      await db.ProductUnit.bulkCreate(createForm.units.map((result, index) => {
-        return {
-          id: index + 1,
-          productId: product.id,
-          name: result.name,
-          rate: result.rate
-        }
-      }), {transaction})
+      await createProductUnit(product.id, createForm.units, transaction);
     }
     await transaction.commit();
     return product;
@@ -80,8 +78,56 @@ export async function createProduct(userId, createForm) {
 
 }
 
-export function removeProduct (pId) {
-  return db.Product.destroy({
-    where: { id: pId }
-  });
+export async function updateProduct(pId, updateForm) {
+
+  const existedProduct = await db.Product.findByPk(pId);
+  if (!existedProduct) {
+    throw badRequest('product', FIELD_ERROR.INVALID, 'product not found');
+  }
+  const transaction = await db.sequelize.transaction();
+  try {
+    await existedProduct.update({
+      name: updateForm.name,
+      remark: updateForm.remark,
+      priceBaseUnit: updateForm.priceBaseUnit,
+      companyId: updateForm.companyId
+    }, transaction);
+
+    if (updateForm.assets && updateForm.assets.length) {
+      await removeProductAsset(existedProduct.id, transaction);
+      await createProductAsset(existedProduct.id, updateForm.assets, transaction);
+    }
+
+    if (updateForm.units && updateForm.units.length) {
+      await removeProductUnit(existedProduct.id, transaction);
+      await createProductUnit(existedProduct.id, updateForm.units, transaction);
+    }
+
+    await transaction.commit();
+    return existedProduct;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+
+}
+
+export async function removeProduct(productId) {
+  const checkProduct = await db.Product.findByPk(productId);
+  if (!checkProduct) {
+    throw badRequest('product', FIELD_ERROR.INVALID, 'product not found');
+  }
+  const transaction = await db.sequelize.transaction();
+  try {
+    await removeProductAsset(checkProduct.id, transaction);
+    await removeProductUnit(checkProduct.id, transaction);
+    const product = db.Product.destroy({
+      where: { id: checkProduct.id }
+    }, {transaction});
+    await transaction.commit();
+    return product;
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
 }

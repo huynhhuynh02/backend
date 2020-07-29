@@ -21,4 +21,19 @@ export default class Asset extends Sequelize.Model{
         sequelize, ...opts
       })
   }
+
+  static associate(models) {
+    this.belongsToMany(models.Product, {
+      through: models.ProductAsset,
+      foreignKey: 'assetId',
+      otherKey: 'productId',
+      as: 'products'
+    });
+    this.belongsToMany(models.Order, {
+      through: models.ProductAsset,
+      foreignKey: 'assetId',
+      otherKey: 'orderId',
+      as: 'orders'
+    });
+  }
 }

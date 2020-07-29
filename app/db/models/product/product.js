@@ -25,5 +25,12 @@ export default class Product extends Sequelize.Model{
 
   static associate (models) {
     this.belongsTo(models.User, { foreignKey: 'createdById', as: 'createdBy' });
+    this.belongsToMany(models.Asset, {
+      through: models.ProductAsset,
+      foreignKey: 'productId',
+      otherKey: 'assetId',
+      as: 'assets'
+    });
+    this.hasMany(models.ProductUnit, { foreignKey: 'productId', as: 'units' });
   }
 }

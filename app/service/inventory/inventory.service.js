@@ -1,5 +1,6 @@
 import db from '../../db/models';
 import { badRequest, FIELD_ERROR } from '../../config/error';
+import { createInventoryDetail, removeInventoryDetail } from './inventory-detail.service';
 
 const {Op} = db.Sequelize;
 
@@ -9,7 +10,7 @@ export function inventories(search, order, offset, limit) {
     if (search.warehouseId) {
       where.warehouseId = search.warehouseId;
     }
-    if (search.title && search.title.length > 0) {
+    if (search.title && search.title.length) {
       where = {
         title: {
           [Op.like]: `%${search.title}%`
@@ -76,19 +77,8 @@ export async function createInventory(userId, type, createForm) {
     }, {transaction});
 
     if (createForm.details && createForm.details.length) {
-      await db.InventoryDetail.bulkCreate(createForm.details.map((result, index) => {
-          return {
-            inventoryId: inventory.id,
-            inventoryDetailId: index + 1,
-            productId: result.productId,
-            unitId: result.unitId,
-            quantity: result.quantity,
-            remark: result.remark
-          }
-        }),{ transaction }
-      );
+      await createInventoryDetail(inventory.id, createForm.details, transaction);
     }
-
     await transaction.commit();
     return inventory;
   } catch (error) {
@@ -104,45 +94,30 @@ export async function updateInventory(inventoryId, type, updateForm) {
   }
   const transaction = await db.sequelize.transaction();
   try {
-    existedInventory.warehouseId = updateForm.warehouseId;
-    existedInventory.name = updateForm.name;
-    existedInventory.remark = updateForm.remark;
-    existedInventory.purposeId = updateForm.purposeId;
-    existedInventory.relativeId = updateForm.relativeId;
-    existedInventory.type = updateForm.type;
+
+    await existedInventory.update({
+      warehouseId: updateForm.warehouseId,
+      name: updateForm.name,
+      remark: updateForm.remark,
+      purposeId: updateForm.purposeId,
+      relativeId: updateForm.relativeId,
+      type: updateForm.type
+    }, transaction);
 
     // get list inventory detail
     const listOldInventoryDetail = await db.InventoryDetail.findAll({
       where: {
         inventoryId: existedInventory.id
       }
-    });
-
-    // delete inventory detail old
-    await db.InventoryDetail.destroy(
-      {
-        where: {
-          inventoryId: existedInventory.id
-        }
-      }
-    );
+    }, {transaction});
 
     if (updateForm.details && updateForm.details.length) {
-      await db.InventoryDetail.bulkCreate(updateForm.details.map((result, index) => {
-          return {
-            inventoryId: existedInventory.id,
-            inventoryDetailId: index + 1,
-            productId: result.productId,
-            unitId: result.unitId,
-            quantity: result.quantity,
-            remark: result.remark
-          }
-        }),{ transaction }
-      );
+      // delete inventory detail old
+      await removeInventoryDetail(existedInventory.id, transaction);
+      // create inventory detail
+      await createInventoryDetail(existedInventory.id, updateForm.details, transaction);
     }
-
-    await existedInventory.save(transaction);
-
+    await existedInventory.save({transaction});
     // send event to summary
     console.log(listOldInventoryDetail[0]);
     await transaction.commit();
@@ -161,16 +136,10 @@ export async function removeInventory (inventoryId) {
   const transaction = await db.sequelize.transaction();
   try {
     // delete inventory detail
-    await db.InventoryDetail.destroy(
-      {
-        where: {
-          inventoryId: existedInventory.id
-        }
-      }
-    );
+    await removeInventoryDetail(existedInventory.id, transaction);
     const inventory = db.Inventory.destroy({
       where: { id: existedInventory.id }
-    });
+    }, {transaction});
     await transaction.commit();
     return inventory;
   } catch (error) {

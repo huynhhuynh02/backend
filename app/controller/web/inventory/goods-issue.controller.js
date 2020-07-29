@@ -12,23 +12,20 @@ import { INVENTORY_TYPE } from '../../../db/models/inventory/inventory';
 const goodsIssue = express.Router();
 
 goodsIssue.get('/:id(\\d+)', hasPermission(PERMISSION.INVENTORY.GOODS_ISSUE.READ), (req, res, next) => {
-  return getInventory(req.params.inventoryId)
+  return getInventory(req.params.id)
     .then(result => res.status(200).json(result))
     .catch(next);
 });
 
 goodsIssue.post('/', hasPermission(PERMISSION.INVENTORY.GOODS_ISSUE.CREATE), (req, res, next) => {
-  const type = INVENTORY_TYPE.OUT;
-  const userId = req.user.id;
-  return createInventory(userId, type, req.body)
+  return createInventory(req.user.id, INVENTORY_TYPE.OUT, req.body)
     .then((newInventory) => {
       res.json(newInventory);
     }, next);
 });
 
 goodsIssue.post('/:id(\\d+)', hasPermission(PERMISSION.INVENTORY.GOODS_ISSUE.UPDATE), (req, res, next) => {
-  const type = INVENTORY_TYPE.OUT;
-  return updateInventory(req.params.id, type, req.body)
+  return updateInventory(req.params.id, INVENTORY_TYPE.OUT, req.body)
     .then(result => res.status(200).json(result))
     .catch(next);
 });

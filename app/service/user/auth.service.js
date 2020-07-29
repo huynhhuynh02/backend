@@ -59,10 +59,10 @@ export async function signIn({username, password}) {
   shopPermissions.forEach(perm => {
     const {actionId, shopId} = perm;
     userPermission[`action${actionId}`].shopId = shopId;
-  })
+  });
 
   let userCompany = null;
-  if (userCompanies.length > 0) {
+  if (userCompanies.length) {
     userCompany = userCompanies[0].id;
   }
 
