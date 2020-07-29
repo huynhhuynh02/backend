@@ -25,7 +25,6 @@ DROP TABLE IF EXISTS `acl_action`;
 CREATE TABLE `acl_action` (
   `id` int(11) NOT NULL,
   `name` varchar(250) DEFAULT NULL,
-  `type` int(11) DEFAULT '1',
   `moduleId` int(11) NOT NULL,
   `remark` text,
   PRIMARY KEY (`id`)
@@ -38,7 +37,7 @@ CREATE TABLE `acl_action` (
 
 LOCK TABLES `acl_action` WRITE;
 /*!40000 ALTER TABLE `acl_action` DISABLE KEYS */;
-INSERT INTO `acl_action` (`id`, `name`, `type`, `moduleId`, `remark`) VALUES (1,'Create Product',1,1,NULL),(2,'Read Product',1,1,NULL),(3,'Update Product',1,1,NULL),(4,'Delete Product',1,1,NULL),(5,'Create Customer',1,2,NULL),(6,'Read Customer',1,2,NULL),(7,'Update Customer',1,2,NULL),(8,'Delete Customer',1,2,NULL),(9,'Create Order',1,3,NULL),(10,'Read Order',2,3,NULL),(11,'Update Order',2,3,NULL),(12,'Delete Order',2,3,NULL),(13,'Create Inventory',1,4,NULL),(14,'Read Inventory',1,4,NULL),(15,'Update Inventory',1,4,NULL),(16,'Delete Inventory',1,4,NULL),(17,'Create Warehouse',1,5,NULL),(18,'Read Warehouse',1,5,NULL),(19,'Update Warehouse',1,5,NULL),(20,'Delete Warehouse',1,5,NULL);
+INSERT INTO `acl_action` (`id`, `name`, `moduleId`, `remark`) VALUES (1,'Create Product',1,NULL),(2,'Read Product',1,NULL),(3,'Update Product',1,NULL),(4,'Delete Product',1,NULL),(5,'Create Customer',2,NULL),(6,'Read Customer',2,NULL),(7,'Update Customer',2,NULL),(8,'Delete Customer',2,NULL),(9,'Create Sale Order',3,NULL),(10,'Read Sale Order',3,NULL),(11,'Update Sale Order',3,NULL),(12,'Delete Sale Order',3,NULL),(13,'Create Goods Receipt Note',4,NULL),(14,'Read Goods Receipt Note',4,NULL),(15,'Update Goods Receipt Note',4,NULL),(16,'Delete Goods Receipt Note',4,NULL),(17,'Create Warehouse',5,NULL),(18,'Read Warehouse',5,NULL),(19,'Update Warehouse',5,NULL),(20,'Delete Warehouse',5,NULL),(21,'Create Goods Issue Note',4,NULL),(22,'Read Goods Issue Note',4,NULL),(23,'Update Goods Issue Note',4,NULL),(24,'Delete Goods Issue Note',4,NULL),(25,'Create Purchase Order',3,NULL),(26,'Read Purchase Order',3,NULL),(27,'Update Purchase Order',3,NULL),(28,'Delete Purchase Order',3,NULL),(29,'Create Cost',6,NULL),(30,'Read Cost',6,NULL),(31,'Update Cost',6,NULL),(32,'Delete Cost',6,NULL);
 /*!40000 ALTER TABLE `acl_action` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +137,7 @@ CREATE TABLE `acl_module` (
 
 LOCK TABLES `acl_module` WRITE;
 /*!40000 ALTER TABLE `acl_module` DISABLE KEYS */;
-INSERT INTO `acl_module` (`id`, `name`, `remark`) VALUES (1,'Product','Manage product.'),(2,'Customer','Manage customer'),(3,'Order','Manage Order'),(4,'Inventory','Manage inventory'),(5,'WareHouse','Manage Warehouse');
+INSERT INTO `acl_module` (`id`, `name`, `remark`) VALUES (1,'Product','Manage product.'),(2,'Customer','Manage customer'),(3,'Order','Manage Order'),(4,'Inventory','Manage inventory'),(5,'WareHouse','Manage Warehouse'),(6,'Cost','Manage Cost');
 /*!40000 ALTER TABLE `acl_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -155,6 +154,8 @@ CREATE TABLE `asset` (
   `size` int(11) DEFAULT NULL,
   `type` varchar(50) DEFAULT NULL,
   `fileId` varchar(64) NOT NULL,
+  `companyId` bigint(20) DEFAULT NULL,
+  `createdById` bigint(20) DEFAULT NULL,
   `createdDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `asset_fileId_uindex` (`fileId`)
@@ -403,12 +404,14 @@ CREATE TABLE `inventory` (
   `name` varchar(250) DEFAULT NULL,
   `warehouseId` bigint(20) DEFAULT NULL,
   `type` tinyint(4) DEFAULT NULL COMMENT 'IN: 1\nOUT: 2',
-  `createdDate` datetime DEFAULT NULL,
-  `createdById` bigint(20) NOT NULL,
-  `companyId` bigint(20) NOT NULL,
-  `totalProduct` int(11) DEFAULT NULL,
-  `remark` text,
   `processedDate` datetime DEFAULT NULL,
+  `companyId` bigint(20) NOT NULL,
+  `remark` text,
+  `totalProduct` int(11) DEFAULT NULL,
+  `createdById` bigint(20) NOT NULL,
+  `createdDate` datetime DEFAULT NULL,
+  `lastModifiedById` bigint(20) DEFAULT NULL,
+  `lastModifiedDate` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `inventory_createdById_companyId_index` (`createdById`,`companyId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -514,9 +517,10 @@ CREATE TABLE `inventory_summary` (
   `productId` bigint(20) NOT NULL,
   `unitId` int(11) NOT NULL,
   `quantity` decimal(16,2) DEFAULT '0.00',
-  `lastModifiedDate` datetime DEFAULT CURRENT_TIMESTAMP,
-  `companyId` bigint(20) DEFAULT NULL,
   `warehouseId` bigint(20) NOT NULL,
+  `companyId` bigint(20) DEFAULT NULL,
+  `lastModifiedDate` datetime DEFAULT CURRENT_TIMESTAMP,
+  `lastModifiedById` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `inventory_summary_index` (`warehouseId`,`productId`,`unitId`,`companyId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -569,18 +573,18 @@ CREATE TABLE `order` (
   `partnerPersonId` bigint(20) NOT NULL,
   `partnerCompanyId` bigint(20) DEFAULT '0',
   `type` tinyint(4) DEFAULT NULL COMMENT '1: Purchase Order\n2: Sale Order',
-  `companyId` datetime NOT NULL,
+  `companyId` bigint(20) NOT NULL,
   `totalAmount` decimal(16,2) DEFAULT NULL,
   `remark` text,
-  `shopId` bigint(20) NOT NULL,
-  `lastModifiedDate` datetime DEFAULT NULL,
-  `lastModifiedById` bigint(20) DEFAULT NULL,
-  `createdById` bigint(20) NOT NULL,
+  `shopId` bigint(20) NOT NULL DEFAULT '0',
+  `processedDate` datetime DEFAULT NULL,
   `createdDate` datetime DEFAULT NULL,
-  `purchasedDate` datetime DEFAULT NULL,
+  `createdById` bigint(20) NOT NULL,
+  `lastModifiedById` bigint(20) DEFAULT NULL,
+  `lastModifiedDate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `order__date_index` (`companyId`,`createdDate`),
-  KEY `order_company_shop__index` (`shopId`,`companyId`)
+  KEY `order_company_shop__index` (`shopId`,`companyId`),
+  KEY `order__date_index` (`companyId`,`createdDate`,`name`,`partnerCompanyId`,`partnerPersonId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -769,8 +773,10 @@ CREATE TABLE `product` (
   `priceBaseUnit` decimal(16,2) DEFAULT NULL,
   `remark` text,
   `companyId` bigint(20) DEFAULT NULL,
+  `createdDate` datetime DEFAULT NULL,
   `createdById` bigint(20) DEFAULT NULL,
-  `insertedDate` datetime DEFAULT NULL,
+  `lastModifiedDate` datetime DEFAULT NULL,
+  `lastModifiedById` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `product_name_index` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -1055,4 +1061,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-20 23:47:24
+-- Dump completed on 2020-07-29 14:04:09
