@@ -22,7 +22,7 @@ export async function storeFileFromBase64(baseImage) {
   return filename;
 }
 
-export async function createProductAsset(productId, assetsForm, transaction) {
+export async function createProductAsset(productId, companyId, assetsForm, transaction) {
   const assets = [];
   for (let i = 0; i < assetsForm.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
@@ -33,6 +33,7 @@ export async function createProductAsset(productId, assetsForm, transaction) {
       ext: assetsForm[i].ext,
       size: assetsForm[i].size,
       fileId: fileId,
+      companyId: companyId,
       createdDate: new Date()
     });
   }
@@ -82,7 +83,7 @@ export async function removeProductAsset(productId, transaction) {
 
 }
 
-export async function createOrderAsset(orderId, assetsForm, transaction) {
+export async function createOrderAsset(orderId, companyId, assetsForm, transaction) {
   const assets = [];
   for (let i = 0; i < assetsForm.length; i += 1) {
     // eslint-disable-next-line no-await-in-loop
@@ -93,6 +94,7 @@ export async function createOrderAsset(orderId, assetsForm, transaction) {
       ext: assetsForm[i].ext,
       size: assetsForm[i].size,
       fileId: fileId,
+      companyId: companyId,
       createdDate: new Date()
     });
   }

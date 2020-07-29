@@ -1,39 +1,3 @@
-# Search Goods Receipt/Issue
-
-Return list of Warehouse Goods Receipt/Issue.
-
-**GET** : `/api/inventory?warehouseId&title&dateFrom&dateTo`
-
-**Params**:
-
- - warehouseId: Select from List of company's warehouse
- - title: User input search string
- - dateFrom: Javascript date string
- - dateTo:  Javascript date string
-
-**Success Response**
-```json
-{
-  "count": "integer",
-  "rows": [
-    {
-      "id": 123,
-      "name": "",
-      "type": "",
-      "purposeId": "integer",
-      "relative": {
-        "id": "",
-        "name": ""
-      },
-      "createdDate": "",
-      "totalProduct": "",
-      "remark": "",
-      "processedDate": ""
-    }
-  ]
-}
-```
-
 # Create Goods Receipt Note
 
 Create **Goods Receipt Note** for one company to one warehouse

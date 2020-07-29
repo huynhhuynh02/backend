@@ -33,7 +33,8 @@ export async function getDetailInventorySummary(inventorySummaryId) {
     include: [
       {model: db.WareHouse, as: 'warehouse'},
       {model: db.Product, as: 'product'},
-      {model: db.ProductUnit, as: 'unit'}
+      {model: db.ProductUnit, as: 'unit'},
+      {model: db.InventoryDetailSerial, as: 'serials'}
     ]
   });
   if (!checkInventorySummary) {

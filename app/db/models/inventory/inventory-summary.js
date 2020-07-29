@@ -11,8 +11,9 @@ export default class InventorySummary extends Sequelize.Model{
         productId: {type: DataTypes.BIGINT},
         unitId: {type: DataTypes.INTEGER},
         quantity: {type: DataTypes.DECIMAL(16,2)},
+        companyId: {type: DataTypes.BIGINT},
         lastModifiedDate: {type: DataTypes.DATE},
-        companyId: {type: DataTypes.BIGINT}
+        lastModifiedById: {type: DataTypes.BIGINT}
       },
       {
         tableName: 'inventory_summary',

@@ -13,7 +13,7 @@ export default class Order extends Sequelize.Model{
     return super.init(
       {
         id: {type: DataTypes.BIGINT, primaryKey: true, autoIncrement: true},
-        purchaseDate: {type: DataTypes.DATE},
+        name: {type: DataTypes.STRING(150)},
         partnerPersonId: {type: DataTypes.BIGINT},
         partnerCompanyId: {type: DataTypes.BIGINT},
         type: {type: DataTypes.TINYINT},
@@ -21,6 +21,7 @@ export default class Order extends Sequelize.Model{
         totalAmount: {type: DataTypes.DECIMAL(16,2)},
         remark: {type: DataTypes.TEXT},
         shopId: {type: DataTypes.BIGINT},
+        processedDate: {type: DataTypes.DATE},
         lastModifiedDate: {type: DataTypes.DATE},
         lastModifiedById: {type: DataTypes.BIGINT},
         createdById: {type: DataTypes.BIGINT},

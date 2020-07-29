@@ -24,7 +24,7 @@ sale.get('/', hasPermission(PERMISSION.ORDER.SALE.READ),
   });
 
 sale.post('/', hasPermission(PERMISSION.ORDER.SALE.CREATE), (req, res, next) => {
-  return createOrder(req.user.id, ORDER_TYPE.SALE, req.body)
+  return createOrder(req.user, ORDER_TYPE.SALE, req.body)
     .then((newPurchase) => {
       res.json(newPurchase);
     }, next);
@@ -37,7 +37,7 @@ sale.get('/:id(\\d+)', hasPermission(PERMISSION.ORDER.SALE.READ), (req, res, nex
 });
 
 sale.post('/:id(\\d+)', hasPermission(PERMISSION.ORDER.SALE.UPDATE), (req, res, next) => {
-  return updateOrder(req.params.id, ORDER_TYPE.SALE, req.body)
+  return updateOrder(req.params.id, req.user, ORDER_TYPE.SALE, req.body)
     .then((result) => res.status(200).json(result))
     .catch(next);
 });

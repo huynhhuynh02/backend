@@ -25,7 +25,7 @@ goodsReceipt.post('/', hasPermission(PERMISSION.INVENTORY.GOODS_RECEIPT.CREATE),
 });
 
 goodsReceipt.post('/:id(\\d+)', hasPermission(PERMISSION.INVENTORY.GOODS_RECEIPT.UPDATE), (req, res, next) => {
-  return updateInventory(req.params.id, INVENTORY_TYPE.IN, req.body)
+  return updateInventory(req.params.id, req.user.id, INVENTORY_TYPE.IN, req.body)
     .then(result => res.status(200).json(result))
     .catch(next);
 });

@@ -20,4 +20,9 @@ export default class InventoryDetail extends Sequelize.Model{
         sequelize, ...opts
       })
   }
+
+  static associate (models) {
+    this.belongsTo(models.Product, { foreignKey: 'productId', as: 'product' });
+    this.belongsTo(models.ProductUnit, { foreignKey: 'unitId', as: 'unit' });
+  }
 }

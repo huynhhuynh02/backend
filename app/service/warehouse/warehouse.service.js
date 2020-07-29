@@ -48,7 +48,7 @@ export function createWarehouse(companyId, createForm) {
   )
 }
 
-export async function updateWarehouse(wId, updateForm) {
+export async function updateWarehouse(wId, companyId, updateForm) {
   const warehouse = await db.WareHouse.findByPk(wId);
   if (!warehouse) {
     throw badRequest('warehouse', FIELD_ERROR.INVALID, 'Warehouse not found');
@@ -56,6 +56,7 @@ export async function updateWarehouse(wId, updateForm) {
   warehouse.name = updateForm.name;
   warehouse.address = updateForm.address;
   warehouse.userId = updateForm.userId;
+  warehouse.companyId = companyId;
   return warehouse.save();
 }
 

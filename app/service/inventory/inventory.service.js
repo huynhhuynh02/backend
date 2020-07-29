@@ -52,7 +52,13 @@ export async function getInventory(inventoryId) {
     where: {
       id: inventoryId
     }, include: [
-      {model: db.InventoryDetail, as: 'details'}
+      {
+        model: db.InventoryDetail, as: 'details',
+        include: [
+          {  model: db.Product, as: 'product', attributes: ['id', 'name'] },
+          {  model: db.ProductUnit, as: 'unit', attributes: ['id', 'name'] }
+        ]
+      }
     ]
   });
   if (!inventory) {
@@ -87,7 +93,7 @@ export async function createInventory(userId, type, createForm) {
   }
 }
 
-export async function updateInventory(inventoryId, type, updateForm) {
+export async function updateInventory(inventoryId, userId, type, updateForm) {
   const existedInventory = await db.Inventory.findByPk(inventoryId);
   if (!existedInventory) {
     throw badRequest('inventory', FIELD_ERROR.INVALID, 'inventory not found');
@@ -101,7 +107,9 @@ export async function updateInventory(inventoryId, type, updateForm) {
       remark: updateForm.remark,
       purposeId: updateForm.purposeId,
       relativeId: updateForm.relativeId,
-      type: updateForm.type
+      type: updateForm.type,
+      lastModifiedDate: new Date(),
+      lastModifiedById: userId
     }, transaction);
 
     // get list inventory detail

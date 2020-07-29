@@ -12,6 +12,8 @@ export default class Asset extends Sequelize.Model{
         size: {type: DataTypes.INTEGER},
         type: {type: DataTypes.STRING(50)},
         fileId: {type: DataTypes.STRING(64)},
+        companyId: {type: DataTypes.BIGINT},
+        createdById: {type: DataTypes.BIGINT},
         createdDate: {type: DataTypes.DATE}
       },
       {
