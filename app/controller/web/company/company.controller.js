@@ -27,8 +27,9 @@ company.get('/:id(\\d+)', (req, res, next) => {
     .catch(next);
 });
 
-company.post('/create', (req, res, next) => {
-  const userId = req.user.id;
+company.post('/', (req, res, next) => {
+  // const userId = req.user.id;
+  const userId = 1;
   return createCompany(userId, req.body)
     .then((newWareHouse) => {
       res.json(newWareHouse);
