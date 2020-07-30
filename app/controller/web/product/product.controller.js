@@ -32,8 +32,8 @@ product.get('/:id(\\d+)', hasPermission(PERMISSION.PRODUCT.READ), (req, res, nex
 product.post('/', hasPermission(PERMISSION.PRODUCT.CREATE), (req, res, next) => {
   return createProduct(req.user, req.body)
     .then((newInventory) => {
-      res.json(newInventory);
-    }, next);
+      res.status(200).json(newInventory);
+    }).catch(next);
 });
 
 product.post('/:id(\\d+)', hasPermission(PERMISSION.PRODUCT.UPDATE), (req, res, next) => {

@@ -28,12 +28,10 @@ company.get('/:id(\\d+)', (req, res, next) => {
 });
 
 company.post('/', (req, res, next) => {
-  // const userId = req.user.id;
-  const userId = 1;
-  return createCompany(userId, req.body)
+  return createCompany(req.user.id, req.body)
     .then((newWareHouse) => {
-      res.json(newWareHouse);
-    }, next);
+      res.status(200).json(newWareHouse);
+    }).catch(next);
 });
 
 company.post('/:id(\\d+)', (req, res, next) => {

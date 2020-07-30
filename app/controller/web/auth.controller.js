@@ -21,8 +21,8 @@ auth.get('/access-denies', hasPermission([PERMISSION.INVENTORY.READ, PERMISSION.
 auth.post('/register', (req, res, next) => {
   return register(req.body)
     .then((newUser) => {
-      res.json(newUser);
-    }, next);
+      res.status(200).json(newUser);
+    }).catch(next);
 });
 
 auth.get('/resendEmailActive', (req, res, next) => {

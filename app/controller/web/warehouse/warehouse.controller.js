@@ -29,9 +29,9 @@ warehouse.get('/:id(\\d+)', hasPermission(PERMISSION.WAREHOUSE.READ), (req, res,
 
 warehouse.post('/', hasPermission(PERMISSION.WAREHOUSE.CREATE), (req, res, next) => {
   return createWarehouse(req.user.userCompanies, req.body)
-    .then((newWareHouse) => {
-      res.json(newWareHouse);
-    }, next);
+    .then((newWarehouse) => {
+      res.status(200).json(newWarehouse)})
+    .catch(next);
 });
 
 warehouse.post('/:id(\\d+)', hasPermission(PERMISSION.WAREHOUSE.UPDATE), (req, res, next) => {

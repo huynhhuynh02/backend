@@ -130,7 +130,11 @@ export async function register(registerForm) {
 
         await t.commit();
         appLog.info(`Send event user:register ${JSON.stringify(newUser)}`);
-        userEmitter.emit(USER_EVENT.REGISTER, newUser);
+
+        if (process.env.NODE_ENV !== 'test') {
+          userEmitter.emit(USER_EVENT.REGISTER, newUser);
+        }
+
 
         return newUser;
       } catch (e) {

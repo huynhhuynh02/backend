@@ -19,8 +19,8 @@ purchase.get('/', hasPermission(PERMISSION.ORDER.PURCHASE.READ),
 purchase.post('/', (req, res, next) => {
   return createOrder(req.user, ORDER_TYPE.PURCHASE, req.body)
     .then((newPurchase) => {
-      res.json(newPurchase);
-    }, next);
+      res.status(200).json(newPurchase);
+    }).catch(next);
 });
 
 purchase.get('/:id(\\d+)', hasPermission(PERMISSION.ORDER.PURCHASE.READ), (req, res, next) => {
