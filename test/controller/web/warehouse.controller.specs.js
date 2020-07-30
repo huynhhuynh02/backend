@@ -10,17 +10,19 @@ chai.use(chaiHttp);
 
 
 describe('warehouse.controller.js', () => {
-
+  let user;
+  let token;
   before(async () => {
     await beforeTestWarehouse();
-  });
-
-  it('Create', async () => {
     const formLogin = {
       username: 'tanduy899@gmail.com',
       password: '1234'
     };
-    const {token, user} = await signInTest(formLogin);
+    const signResponse = await signInTest(formLogin);
+    ({token, user} = signResponse);
+  });
+
+  it('Create', async () => {
     const createForm = {
       name: 'Nha kho 1',
       address: '09 ung van khiem',
