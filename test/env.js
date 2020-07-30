@@ -1,7 +1,7 @@
 process.env.DB_HOST = "127.0.0.1";
 process.env.DB_USERNAME = "root";
 process.env.NODE_ENV = "test";
-process.env.LE_ENV = true;
+// process.env.LE_ENV = true;
 if (process.env.TRAVIS_ENV === '1') {
   process.env.DB_PASSWORD = "";
 } else if (process.env.LE_ENV) {
