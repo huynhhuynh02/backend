@@ -11,16 +11,13 @@ purchase.get('/', hasPermission(PERMISSION.ORDER.PURCHASE.READ),
   pagingParse({column: 'id', dir: 'asc'}),
   (req, res, next) => {
     return orders(req.query, req.paging.order, req.paging.offset, req.paging.size)
-      .then((t) => {
-        res.status(200).json(t);
-      }).catch(next);
+      .then(result => res.status(200).json(result))
+      .catch(next);
   });
 
-purchase.post('/', (req, res, next) => {
+purchase.post('/', hasPermission(PERMISSION.ORDER.PURCHASE.CREATE), (req, res, next) => {
   return createOrder(req.user, ORDER_TYPE.PURCHASE, req.body)
-    .then((newPurchase) => {
-      res.status(200).json(newPurchase);
-    }).catch(next);
+    .then(result => res.status(200).json(result)).catch(next);
 });
 
 purchase.get('/:id(\\d+)', hasPermission(PERMISSION.ORDER.PURCHASE.READ), (req, res, next) => {
@@ -35,7 +32,7 @@ purchase.post('/:id(\\d+)', hasPermission(PERMISSION.ORDER.PURCHASE.UPDATE), (re
     .catch(next);
 });
 
-purchase.delete('/:id(\\d+)',  hasPermission(PERMISSION.ORDER.PURCHASE.DELETE),  (req, res, next) => {
+purchase.delete('/:id(\\d+)',  hasPermission(PERMISSION.ORDER.PURCHASE.DELETE), (req, res, next) => {
   return removeOrder(req.params.id, ORDER_TYPE.PURCHASE)
     .then(result => res.status(200).json(result))
     .catch(next);

@@ -12,13 +12,10 @@ import { PERMISSION } from '../../../db/models/acl/acl-action';
 
 const company = express.Router();
 
-company.get('/',
-  pagingParse({column: 'id', dir: 'asc'}),
-  (req, res, next) => {
+company.get('/', pagingParse({column: 'id', dir: 'asc'}), (req, res, next) => {
     return companies(req.query, req.paging.order, req.paging.offset, req.paging.size)
-      .then((t) => {
-        res.status(200).json(t);
-      }).catch(next);
+      .then(t => res.status(200).json(t))
+      .catch(next);
   });
 
 company.get('/:id(\\d+)', (req, res, next) => {
@@ -29,9 +26,8 @@ company.get('/:id(\\d+)', (req, res, next) => {
 
 company.post('/', (req, res, next) => {
   return createCompany(req.user.id, req.body)
-    .then((newWareHouse) => {
-      res.status(200).json(newWareHouse);
-    }).catch(next);
+    .then(result => res.status(200).json(result))
+    .catch(next);
 });
 
 company.post('/:id(\\d+)', (req, res, next) => {

@@ -16,9 +16,8 @@ warehouse.get('/', hasPermission(PERMISSION.WAREHOUSE.READ),
   pagingParse({column: 'id', dir: 'asc'}),
   (req, res, next) => {
     return warehouses(req.query, req.paging.order, req.paging.offset, req.paging.size)
-      .then((t) => {
-        res.status(200).json(t);
-      }).catch(next);
+      .then(result => res.status(200).json(result))
+      .catch(next);
   });
 
 warehouse.get('/:id(\\d+)', hasPermission(PERMISSION.WAREHOUSE.READ), (req, res, next) => {
@@ -29,8 +28,7 @@ warehouse.get('/:id(\\d+)', hasPermission(PERMISSION.WAREHOUSE.READ), (req, res,
 
 warehouse.post('/', hasPermission(PERMISSION.WAREHOUSE.CREATE), (req, res, next) => {
   return createWarehouse(req.user.userCompanies, req.body)
-    .then((newWarehouse) => {
-      return res.status(200).json(newWarehouse)})
+    .then(result => res.status(200).json(result))
     .catch(next);
 });
 

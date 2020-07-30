@@ -18,16 +18,13 @@ sale.get('/', hasPermission(PERMISSION.ORDER.SALE.READ),
   pagingParse({column: 'id', dir: 'asc'}),
   (req, res, next) => {
     return orders(req.query, req.paging.order, req.paging.offset, req.paging.size)
-      .then((t) => {
-        res.status(200).json(t);
-      }).catch(next);
+      .then(result => res.status(200).json(result))
+      .catch(next);
   });
 
 sale.post('/', hasPermission(PERMISSION.ORDER.SALE.CREATE), (req, res, next) => {
   return createOrder(req.user, ORDER_TYPE.SALE, req.body)
-    .then((newPurchase) => {
-      res.status(200).json(newPurchase);
-    }).catch(next);
+    .then(result => res.status(200).json(result)).catch(next);
 });
 
 sale.get('/:id(\\d+)', hasPermission(PERMISSION.ORDER.SALE.READ), (req, res, next) => {

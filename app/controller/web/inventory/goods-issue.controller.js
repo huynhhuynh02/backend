@@ -19,9 +19,8 @@ goodsIssue.get('/:id(\\d+)', hasPermission(PERMISSION.INVENTORY.GOODS_ISSUE.READ
 
 goodsIssue.post('/', hasPermission(PERMISSION.INVENTORY.GOODS_ISSUE.CREATE), (req, res, next) => {
   return createInventory(req.user.id, INVENTORY_TYPE.OUT, req.body)
-    .then((newInventory) => {
-      res.status(200).json(newInventory);
-    }).catch(next);
+    .then(result => res.status(200).json(result)).
+    catch(next);
 });
 
 goodsIssue.post('/:id(\\d+)', hasPermission(PERMISSION.INVENTORY.GOODS_ISSUE.UPDATE), (req, res, next) => {

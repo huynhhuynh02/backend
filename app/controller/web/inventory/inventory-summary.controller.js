@@ -10,9 +10,8 @@ inventorySummary.get('/', hasPermission(PERMISSION.INVENTORY.READ),
   pagingParse({column: 'id', dir: 'asc'}),
   (req, res, next) => {
     return inventorySummaries(req.query, req.paging.order, req.paging.offset, req.paging.size)
-      .then((t) => {
-        res.status(200).json(t);
-      }).catch(next);
+      .then(result => res.status(200).json(result))
+      .catch(next);
   });
 
 inventorySummary.get('/:id(\\d+)', hasPermission(PERMISSION.INVENTORY.GOODS_ISSUE.READ), (req, res, next) => {

@@ -20,9 +20,7 @@ auth.get('/access-denies', hasPermission([PERMISSION.INVENTORY.READ, PERMISSION.
 
 auth.post('/register', (req, res, next) => {
   return register(req.body)
-    .then((newUser) => {
-      res.status(200).json(newUser);
-    }).catch(next);
+    .then(result => res.status(200).json(result)).catch(next);
 });
 
 auth.get('/resendEmailActive', (req, res, next) => {
@@ -48,10 +46,10 @@ auth.get('/sign-out', (req, res) => {
 
 auth.post('/email-verify', (req, res, next) => {
   userService.confirmEmail(req.body.email, req.body.token)
-    .then((t) => {
+    .then(result => {
       res.status(200)
-        .json(t);
-    }, next);
+        .json(result);
+    }).catch(next);
 });
 
 export function initWebAuthController(app) {
