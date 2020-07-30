@@ -81,7 +81,7 @@ export async function getOrderSale(oId) {
   return order;
 }
 
-export async function createOrder(userId, type, createForm) {
+export async function createOrder(user, type, createForm) {
   const transaction = await db.sequelize.transaction();
 
   try {
@@ -90,8 +90,8 @@ export async function createOrder(userId, type, createForm) {
       remark: createForm.remark,
       partnerCompanyId: createForm.partnerCompanyId,
       partnerPersonId: createForm.partnerPersonId,
-      createdById: userId,
-      companyId: userId,
+      createdById: user.id,
+      companyId: user.userCompanies,
       processedDate: new Date()
     }, {transaction});
 
@@ -100,7 +100,7 @@ export async function createOrder(userId, type, createForm) {
     }
 
     if (type === ORDER_TYPE.PURCHASE && createForm.assets && createForm.assets.length) {
-      await createOrderAsset(order.id, createForm.assets, transaction);
+      await createOrderAsset(order.id, user.userCompanies, createForm.assets, transaction);
     }
 
     await transaction.commit();
@@ -111,7 +111,7 @@ export async function createOrder(userId, type, createForm) {
   }
 }
 
-export async function updateOrder(oId, type, updateForm) {
+export async function updateOrder(oId, user, type, updateForm) {
 
   const existedOrder = await db.Order.findByPk(oId);
   if (!existedOrder) {
@@ -124,7 +124,10 @@ export async function updateOrder(oId, type, updateForm) {
       remark: updateForm.remark,
       partnerCompanyId: updateForm.partnerCompanyId,
       partnerPersonId: updateForm.partnerPersonId,
-      processedDate: new Date()
+      processedDate: new Date(),
+      companyId: user.userCompanies,
+      lastModifiedDate: new Date(),
+      lastModifiedById: user.id
     }, transaction);
 
     if (updateForm.details && updateForm.details.length) {
@@ -134,7 +137,7 @@ export async function updateOrder(oId, type, updateForm) {
 
     if (type === ORDER_TYPE.PURCHASE && updateForm.assets && updateForm.assets.length) {
       await removeOrderAsset(existedOrder.id, transaction);
-      await createOrderAsset(existedOrder.id, updateForm.assets, transaction);
+      await createOrderAsset(existedOrder.id, user.userCompanies, updateForm.assets, transaction);
     }
 
     await transaction.commit();

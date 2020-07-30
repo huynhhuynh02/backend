@@ -39,7 +39,6 @@ describe('auth.controller.js', () => {
         res.body.should.have.property('status').eql(1);
         res.body.should.have.property('pwd');
         db.User.comparePassword(form.password, res.body.pwd).should.true;
-        console.log(res.body);
         done();
       });
   });

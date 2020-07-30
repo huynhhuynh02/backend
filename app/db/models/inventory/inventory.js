@@ -18,11 +18,13 @@ export default class Inventory extends Sequelize.Model{
         warehouseId: {type: DataTypes.BIGINT},
         type: {type: DataTypes.TINYINT},
         processedDate: {type: DataTypes.DATE},
-        createdDate: {type: DataTypes.DATE},
-        createdById: {type: DataTypes.BIGINT},
         companyId: {type: DataTypes.BIGINT},
         totalProduct: {type: DataTypes.INTEGER},
-        remark: {type: DataTypes.TEXT}
+        remark: {type: DataTypes.TEXT},
+        createdDate: {type: DataTypes.DATE},
+        createdById: {type: DataTypes.BIGINT},
+        lastModifiedDate: {type: DataTypes.DATE},
+        lastModifiedById: {type: DataTypes.BIGINT}
       },
       {
         tableName: 'inventory',

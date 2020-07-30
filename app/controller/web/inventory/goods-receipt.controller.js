@@ -20,12 +20,12 @@ goodsReceipt.get('/:id(\\d+)', hasPermission(PERMISSION.INVENTORY.GOODS_RECEIPT.
 goodsReceipt.post('/', hasPermission(PERMISSION.INVENTORY.GOODS_RECEIPT.CREATE), (req, res, next) => {
   return createInventory(req.user.id, INVENTORY_TYPE.IN, req.body)
     .then((newInventory) => {
-      res.json(newInventory);
-    }, next);
+      res.status(200).json(newInventory);
+    }).catch(next);
 });
 
 goodsReceipt.post('/:id(\\d+)', hasPermission(PERMISSION.INVENTORY.GOODS_RECEIPT.UPDATE), (req, res, next) => {
-  return updateInventory(req.params.id, INVENTORY_TYPE.IN, req.body)
+  return updateInventory(req.params.id, req.user.id, INVENTORY_TYPE.IN, req.body)
     .then(result => res.status(200).json(result))
     .catch(next);
 });

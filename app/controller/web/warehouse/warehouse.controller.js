@@ -28,15 +28,14 @@ warehouse.get('/:id(\\d+)', hasPermission(PERMISSION.WAREHOUSE.READ), (req, res,
 });
 
 warehouse.post('/', hasPermission(PERMISSION.WAREHOUSE.CREATE), (req, res, next) => {
-  const companyId = req.user.userCompanies;
-  return createWarehouse(companyId, req.body)
-    .then((newWareHouse) => {
-      res.json(newWareHouse);
-    }, next);
+  return createWarehouse(req.user.userCompanies, req.body)
+    .then((newWarehouse) => {
+      res.status(200).json(newWarehouse)})
+    .catch(next);
 });
 
 warehouse.post('/:id(\\d+)', hasPermission(PERMISSION.WAREHOUSE.UPDATE), (req, res, next) => {
-  return updateWarehouse(req.params.id, req.body)
+  return updateWarehouse(req.params.id, req.user.userCompanies, req.body)
     .then(result => res.status(200).json(result))
     .catch(next);
 });

@@ -48,7 +48,7 @@ export async function getProduct(pId) {
 }
 
 
-export async function createProduct(userId, createForm) {
+export async function createProduct(user, createForm) {
 
   const transaction = await db.sequelize.transaction();
 
@@ -58,12 +58,12 @@ export async function createProduct(userId, createForm) {
       remark: createForm.remark,
       priceBaseUnit: createForm.priceBaseUnit,
       companyId: createForm.companyId,
-      createdById: userId,
+      createdById: user.id,
       createdDate: new Date()
     }, {transaction});
 
     if (createForm.assets && createForm.assets.length) {
-       await createProductAsset(product.id, createForm.assets, transaction);
+       await createProductAsset(product.id, user.userCompanies,  createForm.assets, transaction);
     }
 
     if (createForm.units && createForm.units.length) {
@@ -78,7 +78,7 @@ export async function createProduct(userId, createForm) {
 
 }
 
-export async function updateProduct(pId, updateForm) {
+export async function updateProduct(pId, user, updateForm) {
 
   const existedProduct = await db.Product.findByPk(pId);
   if (!existedProduct) {
@@ -90,12 +90,14 @@ export async function updateProduct(pId, updateForm) {
       name: updateForm.name,
       remark: updateForm.remark,
       priceBaseUnit: updateForm.priceBaseUnit,
-      companyId: updateForm.companyId
+      companyId: updateForm.companyId,
+      lastModifiedDate: new Date(),
+      lastModifiedById: user.id
     }, transaction);
 
     if (updateForm.assets && updateForm.assets.length) {
       await removeProductAsset(existedProduct.id, transaction);
-      await createProductAsset(existedProduct.id, updateForm.assets, transaction);
+      await createProductAsset(existedProduct.id, user.userCompanies, transaction);
     }
 
     if (updateForm.units && updateForm.units.length) {

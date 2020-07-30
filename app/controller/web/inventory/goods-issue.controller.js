@@ -20,12 +20,12 @@ goodsIssue.get('/:id(\\d+)', hasPermission(PERMISSION.INVENTORY.GOODS_ISSUE.READ
 goodsIssue.post('/', hasPermission(PERMISSION.INVENTORY.GOODS_ISSUE.CREATE), (req, res, next) => {
   return createInventory(req.user.id, INVENTORY_TYPE.OUT, req.body)
     .then((newInventory) => {
-      res.json(newInventory);
-    }, next);
+      res.status(200).json(newInventory);
+    }).catch(next);
 });
 
 goodsIssue.post('/:id(\\d+)', hasPermission(PERMISSION.INVENTORY.GOODS_ISSUE.UPDATE), (req, res, next) => {
-  return updateInventory(req.params.id, INVENTORY_TYPE.OUT, req.body)
+  return updateInventory(req.params.id, req.user.id, INVENTORY_TYPE.OUT, req.body)
     .then(result => res.status(200).json(result))
     .catch(next);
 });

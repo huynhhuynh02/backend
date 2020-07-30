@@ -27,12 +27,11 @@ company.get('/:id(\\d+)', (req, res, next) => {
     .catch(next);
 });
 
-company.post('/create', (req, res, next) => {
-  const userId = req.user.id;
-  return createCompany(userId, req.body)
+company.post('/', (req, res, next) => {
+  return createCompany(req.user.id, req.body)
     .then((newWareHouse) => {
-      res.json(newWareHouse);
-    }, next);
+      res.status(200).json(newWareHouse);
+    }).catch(next);
 });
 
 company.post('/:id(\\d+)', (req, res, next) => {
