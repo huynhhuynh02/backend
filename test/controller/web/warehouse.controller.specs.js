@@ -1,6 +1,6 @@
-import { beforeTestWarehouse } from '../../service/warehouse.service.specs';
-import { signInTest } from '../../service/auth.service.test';
-import { app } from '../../../app/server';
+import {beforeTestWarehouse} from '../../service/warehouse.service.specs';
+import {signInTest} from '../../service/auth.service.test';
+import {app} from '../../../app/server';
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -15,7 +15,7 @@ describe('warehouse.controller.js', () => {
     await beforeTestWarehouse();
   });
 
-  it('Create', async (done) => {
+  it('Create', async () => {
     const formLogin = {
       username: 'tanduy899@gmail.com',
       password: '1234'
@@ -26,19 +26,15 @@ describe('warehouse.controller.js', () => {
       address: '09 ung van khiem',
       userId: user.id
     };
-    await chai.request(app)
+    const res = await chai.request(app)
       .post('/api/warehouse')
       .set('Authorization', `Bearer ${token}`)
-      .send(createForm)
-      .end((err, res) => {
-        console.log('vaooooooo');
-        res.should.have.status(200);
-        res.body.should.be.a('object');
-        res.body.should.have.property('name').eql(createForm.name);
-        res.body.should.have.property('address').eql(createForm.address);
-        res.body.should.have.property('userId').eql(createForm.userId);
-        done();
-      });
+      .send(createForm);
+    res.should.have.status(200);
+    res.body.should.be.a('object');
+    res.body.should.have.property('name').eql(createForm.name);
+    res.body.should.have.property('address').eql(createForm.address);
+    res.body.should.have.property('userId').eql(createForm.userId);
   });
 
   // it('Update', async (done) => {
