@@ -33,8 +33,8 @@ auth.get('/resendEmailActive', (req, res, next) => {
 
 auth.post('/sign-in', async (req, res, next) => {
   try {
-    const token = await signIn(req.body);
-    return res.json({msg: 'ok', token: token});
+    const data = await signIn(req.body);
+    return res.json(data);
   } catch (e) {
     return next(e);
   }

@@ -52,9 +52,10 @@ app.use((err, req, res, next) => {
 // setup express application
 const server = http.createServer(app);
 
-server.listen(appConf.port, appConf.hostname, async () => {
+const PORT = process.env.PORT || appConf.port;
+server.listen(PORT, appConf.hostname, async () => {
   await loadConfigure().then(systemConfigure => {
     appLog.info(`System Configure Load: ${JSON.stringify(systemConfigure)}`)
   });
-  appLog.info(`Server running at http://${appConf.hostname}:${appConf.port}/`);
+  appLog.info(`Server running at http://${appConf.hostname}:${PORT}/`);
 });
