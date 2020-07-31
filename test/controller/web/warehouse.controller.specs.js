@@ -1,4 +1,4 @@
-import {beforeTestWarehouse} from '../../service/warehouse.service.specs';
+import {beforeTest} from '../../service/warehouse.service.specs';
 import {signInTest} from '../../service/auth.service.test';
 import {app} from '../../../app/server';
 
@@ -14,7 +14,7 @@ describe('warehouse.controller.js', () => {
   let token;
   let warehouseId;
   before(async () => {
-    await beforeTestWarehouse();
+    await beforeTest();
     const formLogin = {
       username: 'tanduy899@gmail.com',
       password: '1234'

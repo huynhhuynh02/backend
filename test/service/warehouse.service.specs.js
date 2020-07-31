@@ -2,7 +2,7 @@ import db from '../../app/db/models';
 import { registerTest } from './auth.service.test';
 import { createCompany } from '../../app/service/company/company.service';
 
-export async function beforeTestWarehouse() {
+export async function beforeTest() {
   const formUser = {
     username: 'tanduy899@gmail.com',
     password: '1234',

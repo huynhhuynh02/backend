@@ -6,10 +6,16 @@ import OrderAsset from '../../db/models/order/order-asset';
 const fs = require("fs");
 
 const ASSET_STORE_FOLDER = './uploads';
+const ASSET_STORE_FOLDER_TEST = './uploadsTest';
 
 if (!fs.existsSync(`${ASSET_STORE_FOLDER}/`)) {
   fs.mkdirSync(`${ASSET_STORE_FOLDER}/`);
 }
+
+if (!fs.existsSync(`${ASSET_STORE_FOLDER_TEST}/`)) {
+  fs.mkdirSync(`${ASSET_STORE_FOLDER_TEST}/`);
+}
+
 
 export async function storeFileFromBase64(baseImage) {
   const ext = baseImage.substring(baseImage.indexOf("/") + 1, baseImage.indexOf(";base64"));
@@ -18,7 +24,11 @@ export async function storeFileFromBase64(baseImage) {
   const base64Data = baseImage.replace(regex, "");
   const filename = uuidv4();
 
-  fs.writeFileSync(`${ASSET_STORE_FOLDER}/${filename}`, base64Data, 'base64');
+  if (process.env.NODE_ENV !== 'test') {
+    fs.writeFileSync(`${ASSET_STORE_FOLDER}/${filename}`, base64Data, 'base64');
+  } else {
+    fs.writeFileSync(`${ASSET_STORE_FOLDER_TEST}/${filename}`, base64Data, 'base64');
+  }
   return filename;
 }
 
@@ -60,11 +70,20 @@ export async function removeProductAsset(productId, transaction) {
 
   if (product && product.assets.length) {
     for (let i = 0; i < product.assets.length; i += 1) {
-      fs.unlinkSync(`${ASSET_STORE_FOLDER}/${product.assets[i].fileId}`, (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
+      if (process.env.NODE_ENV !== 'test') {
+        fs.unlinkSync(`${ASSET_STORE_FOLDER}/${product.assets[i].fileId}`, (err) => {
+          if (err) {
+            console.log(err);
+          }
+        });
+      } else {
+        fs.unlinkSync(`${ASSET_STORE_FOLDER_TEST}/${product.assets[i].fileId}`, (err) => {
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
+
       // eslint-disable-next-line no-await-in-loop
       await db.Asset.destroy({
           where: {

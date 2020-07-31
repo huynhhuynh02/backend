@@ -7,6 +7,7 @@ import { createProductUnit, removeProductUnit } from './product-unit.service';
 const {Op} = db.Sequelize;
 
 export function products(search, order, offset, limit) {
+  console.log('vaoooooooooo');
   let where = {};
   if (search) {
     if (search.name && search.name.length > 0) {
@@ -22,8 +23,8 @@ export function products(search, order, offset, limit) {
     where,
     include: [
       {
-        model: User,
-        attributes: ['id', 'name']
+        model: User, as: 'createdBy',
+        attributes: ['id', 'displayName']
       }
     ],
     offset,
@@ -41,6 +42,7 @@ export async function getProduct(pId) {
       {model: db.ProductUnit, as: 'units'}
     ]
   });
+  console.log(product);
   if (!product) {
     throw badRequest('product', FIELD_ERROR.INVALID, 'product not found');
   }

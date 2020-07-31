@@ -10,3 +10,4 @@ uploads/
 .nyc_output/
 coverage
 .coveralls.yml
+uploadsTest/

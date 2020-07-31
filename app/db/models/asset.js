@@ -32,7 +32,7 @@ export default class Asset extends Sequelize.Model{
       as: 'products'
     });
     this.belongsToMany(models.Order, {
-      through: models.ProductAsset,
+      through: models.OrderAsset,
       foreignKey: 'assetId',
       otherKey: 'orderId',
       as: 'orders'
