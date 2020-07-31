@@ -140,11 +140,19 @@ export async function removeOrderAsset(orderId, transaction) {
 
   if (order && order.assets.length) {
     for (let i = 0; i < order.assets.length; i += 1) {
-      fs.unlinkSync(`${ASSET_STORE_FOLDER}/${order.assets[i].fileId}`, (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
+      if (process.env.NODE_ENV !== 'test') {
+        fs.unlinkSync(`${ASSET_STORE_FOLDER}/${order.assets[i].fileId}`, (err) => {
+          if (err) {
+            console.log(err);
+          }
+        });
+      } else {
+        fs.unlinkSync(`${ASSET_STORE_FOLDER_TEST}/${order.assets[i].fileId}`, (err) => {
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
       // eslint-disable-next-line no-await-in-loop
       await db.Asset.destroy({
           where: {

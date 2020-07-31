@@ -81,7 +81,6 @@ export async function createInventory(userId, type, createForm) {
       processedDate: new Date(),
       createdById: userId
     }, {transaction});
-
     if (createForm.details && createForm.details.length) {
       await createInventoryDetail(inventory.id, createForm.details, transaction);
     }

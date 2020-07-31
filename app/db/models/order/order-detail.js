@@ -13,8 +13,7 @@ export default class OrderDetail extends Sequelize.Model{
         quantity: {type: DataTypes.INTEGER},
         amount: {type: DataTypes.DECIMAL(14,2)},
         price: {type: DataTypes.DECIMAL(14,2)},
-        remark: {type: DataTypes.TEXT},
-        shopId: {type: DataTypes.BIGINT}
+        remark: {type: DataTypes.TEXT}
       },
       {
         tableName: 'order_detail',
