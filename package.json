@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf dist && mkdir dist",
     "clean-log": "rimraf logs && mkdir logs",
-    "build": "babel app --out-dir dist && ncp app/template dist/template && ncp certificate dist/certificate",
+    "build": "npm run clean && babel app --out-dir dist && ncp app/template dist/template",
     "start": "env-cmd nodemon --exec babel-node app/server.js",
     "serve": "node dist/server.js",
     "test": "mocha --recursive --timeout 10000 --exit",
@@ -49,7 +49,8 @@
     "sequelize": "^6.2.4",
     "uuid": "^8.2.0",
     "winston": "^3.3.3",
-    "winston-daily-rotate-file": "^4.5.0"
+    "winston-daily-rotate-file": "^4.5.0",
+    "dot-prop": ">=5.1.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.4",
