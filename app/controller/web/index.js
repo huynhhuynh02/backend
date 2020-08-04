@@ -8,7 +8,7 @@ import { initWebProductController } from './product/product.controller';
 import { initWebInventorySummaryController } from './inventory/inventory-summary.controller';
 import { initWebOrderPurchaseController } from './order/purchase.controller';
 import { initWebOrderSaleController } from './order/sale.controller';
-
+import { initWebCostController } from './cost/cost.controller';
 export function initWebController(app) {
   initWebAuthController(app);
   initWebWarehouseController(app);
@@ -20,4 +20,5 @@ export function initWebController(app) {
   initWebProductController(app);
   initWebOrderPurchaseController(app);
   initWebOrderSaleController(app);
+  initWebCostController(app);
 }

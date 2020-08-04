@@ -16,4 +16,10 @@ export default class PartnerPerson extends Sequelize.Model{
         sequelize, ...opts
       })
   }
+  static associate (models) {
+    this.belongsTo(models.Person,{
+      foreignKey:'personId',
+      as:'person'
+    });
+  }
 }

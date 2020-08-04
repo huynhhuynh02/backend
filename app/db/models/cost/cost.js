@@ -27,4 +27,14 @@ export default class Cost extends Sequelize.Model{
         sequelize, ...opts
       })
   }
+  static associate (models) {
+    this.belongsTo(models.PartnerCompany, {
+      foreignKey:'partnerCompanyId',
+      as: 'partnerCompany'
+    });
+    this.belongsTo(models.PartnerPerson, {
+      foreignKey:'partnerPersonId',
+      as: 'partnerPerson'
+    });
+  }
 }

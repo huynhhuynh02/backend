@@ -24,4 +24,10 @@ export default class Person extends Sequelize.Model{
         sequelize, ...opts
       })
   }
+  static associate (models) {
+    this.hasMany(models.PartnerPerson, {
+      foreignKey: 'personId',
+      as: 'partnerPerson'
+    });
+  }
 }

@@ -29,5 +29,9 @@ export default class Company extends Sequelize.Model{
       otherKey: 'userId',
       as: 'companyUsers'
     });
+    this.hasMany(models.PartnerCompany, {
+      foreignKey: 'companyId',
+      as: 'partnerCompany'
+    });
   }
 }
