@@ -25,8 +25,8 @@ describe('auth.controller.js', () => {
 
   it('Register', (done) => {
     const form = {
-      username: 'lephuoccanh@gmail.com',
-      password: '1234'
+      username: 'admin@gmail.com',
+      password: 'admin'
     };
     chai.request(app)
       .post('/api/register')
