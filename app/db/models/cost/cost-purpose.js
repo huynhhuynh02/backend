@@ -18,4 +18,10 @@ export default class CostPurpose extends Sequelize.Model{
         sequelize, ...opts
       })
   }
+  static associate (models) {
+    this.belongsTo(models.Cost, {
+      foreignKey:'costId',
+      as: 'cost'
+    });
+  }
 }

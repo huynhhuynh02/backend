@@ -25,6 +25,7 @@ export async function costs(search,order,offset,limit){
             }
         }
     }
+    console.log(where);
     const cost = await db.Cost.findAndCountAll({
         order,
         where,

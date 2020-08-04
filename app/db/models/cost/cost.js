@@ -36,5 +36,9 @@ export default class Cost extends Sequelize.Model{
       foreignKey:'partnerPersonId',
       as: 'partnerPerson'
     });
+    this.hasMany(models.CostPurpose, {
+      foreignKey:'costId',
+      as: 'costPurpose'
+    });
   }
 }
